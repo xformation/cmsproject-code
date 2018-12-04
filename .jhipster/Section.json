@@ -1,0 +1,30 @@
+{
+    "name": "Section",
+    "fields": [
+        {
+            "fieldName": "section",
+            "fieldType": "ClassSection",
+            "fieldValues": "A,B",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "studentyear",
+            "otherEntityName": "studentYear",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20181202105140",
+    "entityTableName": "section",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

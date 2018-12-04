@@ -1,0 +1,34 @@
+enum SYear {
+  I
+  II
+  III
+  IV
+}
+
+enum ClassSection {
+    A
+    B
+}
+
+type SectionDTO {
+  id: ID!
+  section: String
+  studentyearId: Long!
+}
+
+type StudentYearDTO {
+  id: ID!
+  sYear: String
+}
+
+
+type Query {
+  findStudentYear(id:ID!): StudentYearDTO
+  findSection(id:ID!): SectionDTO
+}
+
+
+type Mutation {
+  newStudentYear(id: ID!, s_year: SYear): StudentYearDTO!
+  newSection(id: ID!, section: ClassSection!, studentyearId: Long!): SectionDTO!
+}

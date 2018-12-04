@@ -1,0 +1,64 @@
+entity StudentYear{
+sYear SYear required
+}
+
+enum SYear{
+I,II,III,IV
+}
+
+entity Section{
+section ClassSection required
+}
+
+enum ClassSection{
+A,B
+}
+
+entity Periods{
+periods ClassPeriods required
+}
+
+enum ClassPeriods{
+ONE,TWO,THREE,FOUR,FIVE
+}
+
+entity Subject{
+commonSub Common required,
+electiveSub Elective required
+}
+
+enum Common{
+MATHS,PHYSICS,CHEMISTRY,DBMS
+}
+
+enum Elective{
+JAVA,C
+}
+
+entity Teacher{
+tName String required
+}
+
+entity Student{
+sName String required,
+attendance Boolean required,
+electiveSub Elective required
+}
+
+relationship ManyToOne{
+Section{studentyear} to StudentYear,
+Periods{section} to Section,
+Subject{periods} to Periods,
+Student{teacher} to Teacher,
+Subject{student} to Student,
+Subject{teacher} to Teacher
+}
+
+relationship OneToOne{
+Teacher{periods} to Periods{teacher}
+}
+dto * with mapstruct
+service all with serviceImpl
+paginate StudentYear,Section,Periods,Teacher,Student,Subject with pagination
+
+

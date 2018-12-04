@@ -1,0 +1,23 @@
+{
+    "name": "StudentYear",
+    "fields": [
+        {
+            "fieldName": "sYear",
+            "fieldType": "SYear",
+            "fieldValues": "I,II,III,IV",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20181202105139",
+    "entityTableName": "student_year",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}
