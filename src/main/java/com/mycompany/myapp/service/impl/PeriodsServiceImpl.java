@@ -55,7 +55,7 @@ public class PeriodsServiceImpl implements PeriodsService {
         Periods periods = periodsMapper.toEntity(periodsDTO);
         periods = periodsRepository.save(periods);
         PeriodsDTO result = periodsMapper.toDto(periods);
-        periodsSearchRepository.save(periods);
+        //periodsSearchRepository.save(periods);
         return result;
     }
 

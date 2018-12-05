@@ -45,6 +45,12 @@ attendance Boolean required,
 electiveSub Elective required
 }
 
+entity CollegeBranches{
+branchName String required,
+description String required,
+collegeHead String required
+}
+
 relationship ManyToOne{
 Section{studentyear} to StudentYear,
 Periods{section} to Section,

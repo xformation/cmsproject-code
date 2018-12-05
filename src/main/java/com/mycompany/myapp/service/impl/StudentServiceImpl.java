@@ -52,7 +52,7 @@ public class StudentServiceImpl implements StudentService {
         Student student = studentMapper.toEntity(studentDTO);
         student = studentRepository.save(student);
         StudentDTO result = studentMapper.toDto(student);
-        studentSearchRepository.save(student);
+        //studentSearchRepository.save(student);
         return result;
     }
 

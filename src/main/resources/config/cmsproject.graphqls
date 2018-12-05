@@ -21,14 +21,82 @@ type StudentYearDTO {
   sYear: String
 }
 
+enum ClassPeriods {
+    ONE 
+    TWO
+    THREE
+    FOUR
+    FIVE
+}
+
+type PeriodsDTO {
+	id: ID!
+	periods: String
+	sectionId: Long!
+	
+}
+
+type TeacherDTO {
+    id: ID!
+    tName: String
+    periodsId: Long!
+}
+
+enum Elective {
+    JAVA
+    C
+}
+
+enum Common {
+    MATHS
+    PHYSICS
+    CHEMISTRY
+    DBMS
+}
+
+
+type StudentDTO {
+    id: ID!
+    sName: String!
+    attendance: Boolean!
+    electiveSub: String!
+    teacherId: Long!
+}
+
+type SubjectDTO{
+   id: ID!
+   commonSub: String!
+   electiveSub: String!
+   periodsId: Long!
+   studentId: Long!
+   teacherId: Long!
+}
+
+
+type CollegeBranchesDTO{
+   id: ID!
+   branchName: String!
+   description: String!
+   collegeHead: String!
+}
 
 type Query {
   findStudentYear(id:ID!): StudentYearDTO
   findSection(id:ID!): SectionDTO
+  findPeriods(id:ID!): PeriodsDTO
+  findTeacher(id:ID!): TeacherDTO
+  findStudent(id:ID!): StudentDTO
+  findSubject(id:ID!): SubjectDTO
+  findCollegeBranches(id:ID!): CollegeBranchesDTO
 }
 
 
 type Mutation {
   newStudentYear(id: ID!, s_year: SYear): StudentYearDTO!
   newSection(id: ID!, section: ClassSection!, studentyearId: Long!): SectionDTO!
+  newPeriods(id: ID!, periods: ClassPeriods!, sectionId: Long!): PeriodsDTO!
+  newTeacher(id: ID!, tName: String!, periodsId: Long!): TeacherDTO!
+  newStudent(id: ID!, sName: String!, attendance: Boolean!, electiveSub: Elective!, teacherId: Long!): StudentDTO!
+  newSubject(id:ID!,commonSub: Common!, electiveSub: Elective!, periodsId: Long!, studentId: Long,teacherId: Long!): SubjectDTO!
+  newCollegeBranches(id:ID!,branchName: String!, description: String!, collegeHead: String!): CollegeBranchesDTO!
 }

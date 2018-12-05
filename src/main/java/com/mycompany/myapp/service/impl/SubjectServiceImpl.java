@@ -52,7 +52,7 @@ public class SubjectServiceImpl implements SubjectService {
         Subject subject = subjectMapper.toEntity(subjectDTO);
         subject = subjectRepository.save(subject);
         SubjectDTO result = subjectMapper.toDto(subject);
-        subjectSearchRepository.save(subject);
+        //subjectSearchRepository.save(subject);
         return result;
     }
 
