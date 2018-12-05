@@ -22,6 +22,7 @@ enum ClassPeriods{
 ONE,TWO,THREE,FOUR,FIVE
 }
 
+
 entity Subject{
 commonSub Common required,
 electiveSub Elective required
