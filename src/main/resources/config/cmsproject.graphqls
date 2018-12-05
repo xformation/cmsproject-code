@@ -94,6 +94,14 @@ type LocationDTO{
    appliesTo: String!
 }
 
+type GeneralInfoDTO{
+	id: ID!
+	shortName: String!
+	logo: Long!
+	backgroundImage: Long!
+	instructionInformation: String!	
+}
+
 type Query {
   findStudentYear(id:ID!): StudentYearDTO
   findSection(id:ID!): SectionDTO
@@ -104,6 +112,7 @@ type Query {
   findCollegeBranches(id:ID!): CollegeBranchesDTO
   findDepartments(id:ID!): DepartmentsDTO
   findLocation(id:ID!): LocationDTO
+  findGeneralInfo(id : ID!): GeneralInfoDTO
 }
 
 
@@ -117,4 +126,5 @@ type Mutation {
   newCollegeBranches(id:ID!,branchName: String!, description: String!, collegeHead: String!): CollegeBranchesDTO!
   newDepartments(id:ID!,name: String!, description: String!, deptHead: String!): DepartmentsDTO!
   newLocation(id:ID!,name: String!, address: String!, appliesTo: String!): LocationDTO!
+  newGeneralInfo(id:ID!,shortName: String!, logo: Long!, backgroundImage: Long!, instructionInformation: String!):GeneralInfoDTO!
 }

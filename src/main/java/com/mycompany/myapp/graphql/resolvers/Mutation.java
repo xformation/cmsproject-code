@@ -11,6 +11,7 @@ import com.mycompany.myapp.domain.enumeration.Elective;
 import com.mycompany.myapp.domain.enumeration.SYear;
 import com.mycompany.myapp.service.dto.CollegeBranchesDTO;
 import com.mycompany.myapp.service.dto.DepartmentsDTO;
+import com.mycompany.myapp.service.dto.GeneralInfoDTO;
 import com.mycompany.myapp.service.dto.LocationDTO;
 import com.mycompany.myapp.service.dto.PeriodsDTO;
 import com.mycompany.myapp.service.dto.SectionDTO;
@@ -20,6 +21,7 @@ import com.mycompany.myapp.service.dto.SubjectDTO;
 import com.mycompany.myapp.service.dto.TeacherDTO;
 import com.mycompany.myapp.service.impl.CollegeBranchesServiceImpl;
 import com.mycompany.myapp.service.impl.DepartmentsServiceImpl;
+import com.mycompany.myapp.service.impl.GeneralInfoServiceImpl;
 import com.mycompany.myapp.service.impl.LocationServiceImpl;
 import com.mycompany.myapp.service.impl.PeriodsServiceImpl;
 import com.mycompany.myapp.service.impl.SectionServiceImpl;
@@ -59,6 +61,10 @@ public class Mutation implements GraphQLMutationResolver{
 	 
 	 @Autowired
 	 private LocationServiceImpl locationServiceImpl;
+	 
+	 @Autowired
+	 private GeneralInfoServiceImpl generalInfoServiceImpl;
+
 	
 	public StudentYearDTO newStudentYear(Long id, SYear sYear) {
 		StudentYearDTO studentYearDTO = new StudentYearDTO();
@@ -146,4 +152,16 @@ public class Mutation implements GraphQLMutationResolver{
 		LocationDTO val = locationServiceImpl.save(locationDTO);
 		return val;
 	}
+	
+	public GeneralInfoDTO newGeneralInfo(Long id, String shortName, Long logo, Long backgroundImage, String instructionInformation) {
+        GeneralInfoDTO generalInfoDTO = new GeneralInfoDTO();
+        generalInfoDTO.setId(id);
+        generalInfoDTO.setShortName(shortName);
+        generalInfoDTO.setLogo(logo);
+		generalInfoDTO.setBackgroundImage(backgroundImage);
+		generalInfoDTO.setInstructionInformation(instructionInformation);
+        GeneralInfoDTO val = generalInfoServiceImpl.save(generalInfoDTO);
+        return val;
+    }
 }
+

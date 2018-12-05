@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import com.mycompany.myapp.service.dto.CollegeBranchesDTO;
 import com.mycompany.myapp.service.dto.DepartmentsDTO;
+import com.mycompany.myapp.service.dto.GeneralInfoDTO;
 import com.mycompany.myapp.service.dto.LocationDTO;
 import com.mycompany.myapp.service.dto.PeriodsDTO;
 import com.mycompany.myapp.service.dto.SectionDTO;
@@ -17,6 +18,7 @@ import com.mycompany.myapp.service.dto.SubjectDTO;
 import com.mycompany.myapp.service.dto.TeacherDTO;
 import com.mycompany.myapp.service.impl.CollegeBranchesServiceImpl;
 import com.mycompany.myapp.service.impl.DepartmentsServiceImpl;
+import com.mycompany.myapp.service.impl.GeneralInfoServiceImpl;
 import com.mycompany.myapp.service.impl.LocationServiceImpl;
 import com.mycompany.myapp.service.impl.PeriodsServiceImpl;
 import com.mycompany.myapp.service.impl.SectionServiceImpl;
@@ -57,6 +59,10 @@ public class Query implements GraphQLQueryResolver{
 	 
 	 @Autowired
 	 private LocationServiceImpl locationServiceImpl;
+	 
+	 @Autowired
+	 private GeneralInfoServiceImpl generalInfoServiceImpl;
+
 	
 //	public SubjectsDTO find(Long id) {
 //		Optional<SubjectsDTO> val = subjectsService.findOne(id);
@@ -137,4 +143,13 @@ public class Query implements GraphQLQueryResolver{
 	        }
 	        return new LocationDTO();
 	    }
+	 
+	 public GeneralInfoDTO findGeneralInfo(Long id) {
+		 	Optional<GeneralInfoDTO> val = generalInfoServiceImpl.findOne(id);
+		 	if (val.isPresent()) {
+		 		return val.get();		 		
+		 	}
+		 	return new GeneralInfoDTO();
+	 }
+
 }

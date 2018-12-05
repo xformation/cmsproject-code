@@ -63,6 +63,13 @@ address String required,
 appliesTo String required
 }
 
+entity GeneralInfo {
+	shortName String required,
+	logo Long required,
+	backgroundImage Long required,
+	instructionInformation String required
+}
+
 relationship ManyToOne{
 Section{studentyear} to StudentYear,
 Periods{section} to Section,
