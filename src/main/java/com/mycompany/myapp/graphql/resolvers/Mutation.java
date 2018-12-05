@@ -10,6 +10,8 @@ import com.mycompany.myapp.domain.enumeration.Common;
 import com.mycompany.myapp.domain.enumeration.Elective;
 import com.mycompany.myapp.domain.enumeration.SYear;
 import com.mycompany.myapp.service.dto.CollegeBranchesDTO;
+import com.mycompany.myapp.service.dto.DepartmentsDTO;
+import com.mycompany.myapp.service.dto.LocationDTO;
 import com.mycompany.myapp.service.dto.PeriodsDTO;
 import com.mycompany.myapp.service.dto.SectionDTO;
 import com.mycompany.myapp.service.dto.StudentDTO;
@@ -17,6 +19,8 @@ import com.mycompany.myapp.service.dto.StudentYearDTO;
 import com.mycompany.myapp.service.dto.SubjectDTO;
 import com.mycompany.myapp.service.dto.TeacherDTO;
 import com.mycompany.myapp.service.impl.CollegeBranchesServiceImpl;
+import com.mycompany.myapp.service.impl.DepartmentsServiceImpl;
+import com.mycompany.myapp.service.impl.LocationServiceImpl;
 import com.mycompany.myapp.service.impl.PeriodsServiceImpl;
 import com.mycompany.myapp.service.impl.SectionServiceImpl;
 import com.mycompany.myapp.service.impl.StudentServiceImpl;
@@ -49,6 +53,12 @@ public class Mutation implements GraphQLMutationResolver{
 	
 	 @Autowired
 	 private CollegeBranchesServiceImpl collegeBranchesServiceImpl;
+	 
+	 @Autowired
+	 private DepartmentsServiceImpl departmentsServiceImpl;
+	 
+	 @Autowired
+	 private LocationServiceImpl locationServiceImpl;
 	
 	public StudentYearDTO newStudentYear(Long id, SYear sYear) {
 		StudentYearDTO studentYearDTO = new StudentYearDTO();
@@ -117,4 +127,23 @@ public class Mutation implements GraphQLMutationResolver{
 		  CollegeBranchesDTO val = collegeBranchesServiceImpl.save(collegeBranchesDTO);
 	      return val;
 		}
+	
+	public DepartmentsDTO newDepartments(Long id,String name,String description,String deptHead) {
+	    DepartmentsDTO departmentsDTO = new DepartmentsDTO();
+	    departmentsDTO.setId(id);
+	    departmentsDTO.setName(name);
+	    departmentsDTO.setDescription(description);
+	    departmentsDTO.setDeptHead(deptHead);
+	    DepartmentsDTO val = departmentsServiceImpl.save(departmentsDTO);
+	    return val;
+	}
+	public LocationDTO newLocation(Long id,String name,String address,String appliesTo) {
+		LocationDTO locationDTO = new LocationDTO();
+		locationDTO.setId(id);
+		locationDTO.setName(name);
+		locationDTO.setAddress(address);
+		locationDTO.setAppliesTo(appliesTo);
+		LocationDTO val = locationServiceImpl.save(locationDTO);
+		return val;
+	}
 }

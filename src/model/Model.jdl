@@ -51,6 +51,18 @@ description String required,
 collegeHead String required
 }
 
+entity Departments{
+name String required,
+description String required,
+deptHead String required
+}
+
+entity Location{
+name String required,
+address String required,
+appliesTo String required
+}
+
 relationship ManyToOne{
 Section{studentyear} to StudentYear,
 Periods{section} to Section,

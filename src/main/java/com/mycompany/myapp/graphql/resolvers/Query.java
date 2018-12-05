@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import com.mycompany.myapp.service.dto.CollegeBranchesDTO;
+import com.mycompany.myapp.service.dto.DepartmentsDTO;
+import com.mycompany.myapp.service.dto.LocationDTO;
 import com.mycompany.myapp.service.dto.PeriodsDTO;
 import com.mycompany.myapp.service.dto.SectionDTO;
 import com.mycompany.myapp.service.dto.StudentDTO;
@@ -14,6 +16,8 @@ import com.mycompany.myapp.service.dto.StudentYearDTO;
 import com.mycompany.myapp.service.dto.SubjectDTO;
 import com.mycompany.myapp.service.dto.TeacherDTO;
 import com.mycompany.myapp.service.impl.CollegeBranchesServiceImpl;
+import com.mycompany.myapp.service.impl.DepartmentsServiceImpl;
+import com.mycompany.myapp.service.impl.LocationServiceImpl;
 import com.mycompany.myapp.service.impl.PeriodsServiceImpl;
 import com.mycompany.myapp.service.impl.SectionServiceImpl;
 import com.mycompany.myapp.service.impl.StudentServiceImpl;
@@ -47,6 +51,12 @@ public class Query implements GraphQLQueryResolver{
 	 
 	 @Autowired
 	 private CollegeBranchesServiceImpl collegeBranchesServiceImpl;
+	 
+	 @Autowired
+	 private DepartmentsServiceImpl departmentsServiceImpl;
+	 
+	 @Autowired
+	 private LocationServiceImpl locationServiceImpl;
 	
 //	public SubjectsDTO find(Long id) {
 //		Optional<SubjectsDTO> val = subjectsService.findOne(id);
@@ -112,4 +122,19 @@ public class Query implements GraphQLQueryResolver{
 	        return new CollegeBranchesDTO();
 	    }
 	
+	 public DepartmentsDTO findDepartments(Long id) {
+	        Optional<DepartmentsDTO> val = departmentsServiceImpl.findOne(id);
+	        if (val.isPresent()) {
+	            return val.get();
+	        }
+	        return new DepartmentsDTO();
+	    }
+	 
+	 public LocationDTO findLocation(Long id) {
+	        Optional<LocationDTO> val = locationServiceImpl.findOne(id);
+	        if (val.isPresent()) {
+	            return val.get();
+	        }
+	        return new LocationDTO();
+	    }
 }

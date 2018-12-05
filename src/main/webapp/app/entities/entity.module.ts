@@ -7,6 +7,8 @@ import { CmsprojectSubjectModule } from './subject/subject.module';
 import { CmsprojectTeacherModule } from './teacher/teacher.module';
 import { CmsprojectStudentModule } from './student/student.module';
 import { CmsprojectCollegeBranchesModule } from './college-branches/college-branches.module';
+import { CmsprojectDepartmentsModule } from './departments/departments.module';
+import { CmsprojectLocationModule } from './location/location.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -19,6 +21,8 @@ import { CmsprojectCollegeBranchesModule } from './college-branches/college-bran
         CmsprojectTeacherModule,
         CmsprojectStudentModule,
         CmsprojectCollegeBranchesModule,
+        CmsprojectDepartmentsModule,
+        CmsprojectLocationModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],
