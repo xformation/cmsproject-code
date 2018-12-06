@@ -58,8 +58,10 @@ public class LocationResourceIntTest {
     @Autowired
     private LocationRepository locationRepository;
 
+
     @Autowired
     private LocationMapper locationMapper;
+    
 
     @Autowired
     private LocationService locationService;
@@ -238,6 +240,7 @@ public class LocationResourceIntTest {
             .andExpect(jsonPath("$.[*].appliesTo").value(hasItem(DEFAULT_APPLIES_TO.toString())));
     }
     
+
     @Test
     @Transactional
     public void getLocation() throws Exception {
@@ -253,7 +256,6 @@ public class LocationResourceIntTest {
             .andExpect(jsonPath("$.address").value(DEFAULT_ADDRESS.toString()))
             .andExpect(jsonPath("$.appliesTo").value(DEFAULT_APPLIES_TO.toString()));
     }
-
     @Test
     @Transactional
     public void getNonExistingLocation() throws Exception {
@@ -305,7 +307,7 @@ public class LocationResourceIntTest {
         // Create the Location
         LocationDTO locationDTO = locationMapper.toDto(location);
 
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException 
         restLocationMockMvc.perform(put("/api/locations")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(locationDTO)))
@@ -352,9 +354,9 @@ public class LocationResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(location.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS)))
-            .andExpect(jsonPath("$.[*].appliesTo").value(hasItem(DEFAULT_APPLIES_TO)));
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+            .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS.toString())))
+            .andExpect(jsonPath("$.[*].appliesTo").value(hasItem(DEFAULT_APPLIES_TO.toString())));
     }
 
     @Test

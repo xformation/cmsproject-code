@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
 import { UserRouteAccessService } from 'app/core';
-import { Observable, of } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { CollegeBranches } from 'app/shared/model/college-branches.model';
 import { CollegeBranchesService } from './college-branches.service';
 import { CollegeBranchesComponent } from './college-branches.component';
@@ -16,13 +16,10 @@ import { ICollegeBranches } from 'app/shared/model/college-branches.model';
 export class CollegeBranchesResolve implements Resolve<ICollegeBranches> {
     constructor(private service: CollegeBranchesService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<CollegeBranches> {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
-            return this.service.find(id).pipe(
-                filter((response: HttpResponse<CollegeBranches>) => response.ok),
-                map((collegeBranches: HttpResponse<CollegeBranches>) => collegeBranches.body)
-            );
+            return this.service.find(id).pipe(map((collegeBranches: HttpResponse<CollegeBranches>) => collegeBranches.body));
         }
         return of(new CollegeBranches());
     }

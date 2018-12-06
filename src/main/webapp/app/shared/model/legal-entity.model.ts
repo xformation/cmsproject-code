@@ -7,6 +7,7 @@ export const enum TypeOfCollege {
 
 export interface ILegalEntity {
     id?: number;
+    logo?: number;
     legalNameOfTheCollege?: string;
     typeOfCollege?: TypeOfCollege;
     dateOfIncorporation?: Moment;
@@ -29,6 +30,7 @@ export interface ILegalEntity {
 export class LegalEntity implements ILegalEntity {
     constructor(
         public id?: number,
+        public logo?: number,
         public legalNameOfTheCollege?: string,
         public typeOfCollege?: TypeOfCollege,
         public dateOfIncorporation?: Moment,

@@ -49,6 +49,9 @@ import com.mycompany.myapp.domain.enumeration.TypeOfCollege;
 @SpringBootTest(classes = CmsprojectApp.class)
 public class LegalEntityResourceIntTest {
 
+    private static final Long DEFAULT_LOGO = 1L;
+    private static final Long UPDATED_LOGO = 2L;
+
     private static final String DEFAULT_LEGAL_NAME_OF_THE_COLLEGE = "AAAAAAAAAA";
     private static final String UPDATED_LEGAL_NAME_OF_THE_COLLEGE = "BBBBBBBBBB";
 
@@ -100,8 +103,10 @@ public class LegalEntityResourceIntTest {
     @Autowired
     private LegalEntityRepository legalEntityRepository;
 
+
     @Autowired
     private LegalEntityMapper legalEntityMapper;
+    
 
     @Autowired
     private LegalEntityService legalEntityService;
@@ -149,6 +154,7 @@ public class LegalEntityResourceIntTest {
      */
     public static LegalEntity createEntity(EntityManager em) {
         LegalEntity legalEntity = new LegalEntity()
+            .logo(DEFAULT_LOGO)
             .legalNameOfTheCollege(DEFAULT_LEGAL_NAME_OF_THE_COLLEGE)
             .typeOfCollege(DEFAULT_TYPE_OF_COLLEGE)
             .dateOfIncorporation(DEFAULT_DATE_OF_INCORPORATION)
@@ -189,6 +195,7 @@ public class LegalEntityResourceIntTest {
         List<LegalEntity> legalEntityList = legalEntityRepository.findAll();
         assertThat(legalEntityList).hasSize(databaseSizeBeforeCreate + 1);
         LegalEntity testLegalEntity = legalEntityList.get(legalEntityList.size() - 1);
+        assertThat(testLegalEntity.getLogo()).isEqualTo(DEFAULT_LOGO);
         assertThat(testLegalEntity.getLegalNameOfTheCollege()).isEqualTo(DEFAULT_LEGAL_NAME_OF_THE_COLLEGE);
         assertThat(testLegalEntity.getTypeOfCollege()).isEqualTo(DEFAULT_TYPE_OF_COLLEGE);
         assertThat(testLegalEntity.getDateOfIncorporation()).isEqualTo(DEFAULT_DATE_OF_INCORPORATION);
@@ -231,6 +238,25 @@ public class LegalEntityResourceIntTest {
 
         // Validate the LegalEntity in Elasticsearch
         verify(mockLegalEntitySearchRepository, times(0)).save(legalEntity);
+    }
+
+    @Test
+    @Transactional
+    public void checkLogoIsRequired() throws Exception {
+        int databaseSizeBeforeTest = legalEntityRepository.findAll().size();
+        // set the field null
+        legalEntity.setLogo(null);
+
+        // Create the LegalEntity, which fails.
+        LegalEntityDTO legalEntityDTO = legalEntityMapper.toDto(legalEntity);
+
+        restLegalEntityMockMvc.perform(post("/api/legal-entities")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(legalEntityDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<LegalEntity> legalEntityList = legalEntityRepository.findAll();
+        assertThat(legalEntityList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -548,6 +574,7 @@ public class LegalEntityResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(legalEntity.getId().intValue())))
+            .andExpect(jsonPath("$.[*].logo").value(hasItem(DEFAULT_LOGO.intValue())))
             .andExpect(jsonPath("$.[*].legalNameOfTheCollege").value(hasItem(DEFAULT_LEGAL_NAME_OF_THE_COLLEGE.toString())))
             .andExpect(jsonPath("$.[*].typeOfCollege").value(hasItem(DEFAULT_TYPE_OF_COLLEGE.toString())))
             .andExpect(jsonPath("$.[*].dateOfIncorporation").value(hasItem(DEFAULT_DATE_OF_INCORPORATION.toString())))
@@ -566,6 +593,7 @@ public class LegalEntityResourceIntTest {
             .andExpect(jsonPath("$.[*].ptNumber").value(hasItem(DEFAULT_PT_NUMBER.intValue())));
     }
     
+
     @Test
     @Transactional
     public void getLegalEntity() throws Exception {
@@ -577,6 +605,7 @@ public class LegalEntityResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(legalEntity.getId().intValue()))
+            .andExpect(jsonPath("$.logo").value(DEFAULT_LOGO.intValue()))
             .andExpect(jsonPath("$.legalNameOfTheCollege").value(DEFAULT_LEGAL_NAME_OF_THE_COLLEGE.toString()))
             .andExpect(jsonPath("$.typeOfCollege").value(DEFAULT_TYPE_OF_COLLEGE.toString()))
             .andExpect(jsonPath("$.dateOfIncorporation").value(DEFAULT_DATE_OF_INCORPORATION.toString()))
@@ -594,7 +623,6 @@ public class LegalEntityResourceIntTest {
             .andExpect(jsonPath("$.ptSignatory").value(DEFAULT_PT_SIGNATORY.toString()))
             .andExpect(jsonPath("$.ptNumber").value(DEFAULT_PT_NUMBER.intValue()));
     }
-
     @Test
     @Transactional
     public void getNonExistingLegalEntity() throws Exception {
@@ -616,6 +644,7 @@ public class LegalEntityResourceIntTest {
         // Disconnect from session so that the updates on updatedLegalEntity are not directly saved in db
         em.detach(updatedLegalEntity);
         updatedLegalEntity
+            .logo(UPDATED_LOGO)
             .legalNameOfTheCollege(UPDATED_LEGAL_NAME_OF_THE_COLLEGE)
             .typeOfCollege(UPDATED_TYPE_OF_COLLEGE)
             .dateOfIncorporation(UPDATED_DATE_OF_INCORPORATION)
@@ -643,6 +672,7 @@ public class LegalEntityResourceIntTest {
         List<LegalEntity> legalEntityList = legalEntityRepository.findAll();
         assertThat(legalEntityList).hasSize(databaseSizeBeforeUpdate);
         LegalEntity testLegalEntity = legalEntityList.get(legalEntityList.size() - 1);
+        assertThat(testLegalEntity.getLogo()).isEqualTo(UPDATED_LOGO);
         assertThat(testLegalEntity.getLegalNameOfTheCollege()).isEqualTo(UPDATED_LEGAL_NAME_OF_THE_COLLEGE);
         assertThat(testLegalEntity.getTypeOfCollege()).isEqualTo(UPDATED_TYPE_OF_COLLEGE);
         assertThat(testLegalEntity.getDateOfIncorporation()).isEqualTo(UPDATED_DATE_OF_INCORPORATION);
@@ -672,7 +702,7 @@ public class LegalEntityResourceIntTest {
         // Create the LegalEntity
         LegalEntityDTO legalEntityDTO = legalEntityMapper.toDto(legalEntity);
 
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException 
         restLegalEntityMockMvc.perform(put("/api/legal-entities")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(legalEntityDTO)))
@@ -719,21 +749,22 @@ public class LegalEntityResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(legalEntity.getId().intValue())))
-            .andExpect(jsonPath("$.[*].legalNameOfTheCollege").value(hasItem(DEFAULT_LEGAL_NAME_OF_THE_COLLEGE)))
+            .andExpect(jsonPath("$.[*].logo").value(hasItem(DEFAULT_LOGO.intValue())))
+            .andExpect(jsonPath("$.[*].legalNameOfTheCollege").value(hasItem(DEFAULT_LEGAL_NAME_OF_THE_COLLEGE.toString())))
             .andExpect(jsonPath("$.[*].typeOfCollege").value(hasItem(DEFAULT_TYPE_OF_COLLEGE.toString())))
             .andExpect(jsonPath("$.[*].dateOfIncorporation").value(hasItem(DEFAULT_DATE_OF_INCORPORATION.toString())))
-            .andExpect(jsonPath("$.[*].registeredOfficeAddress").value(hasItem(DEFAULT_REGISTERED_OFFICE_ADDRESS)))
-            .andExpect(jsonPath("$.[*].collegeIdentificationNumber").value(hasItem(DEFAULT_COLLEGE_IDENTIFICATION_NUMBER)))
-            .andExpect(jsonPath("$.[*].pan").value(hasItem(DEFAULT_PAN)))
-            .andExpect(jsonPath("$.[*].tan").value(hasItem(DEFAULT_TAN)))
-            .andExpect(jsonPath("$.[*].tanCircleNumber").value(hasItem(DEFAULT_TAN_CIRCLE_NUMBER)))
-            .andExpect(jsonPath("$.[*].citTdsLocation").value(hasItem(DEFAULT_CIT_TDS_LOCATION)))
-            .andExpect(jsonPath("$.[*].formSignatory").value(hasItem(DEFAULT_FORM_SIGNATORY)))
-            .andExpect(jsonPath("$.[*].pfNumber").value(hasItem(DEFAULT_PF_NUMBER)))
+            .andExpect(jsonPath("$.[*].registeredOfficeAddress").value(hasItem(DEFAULT_REGISTERED_OFFICE_ADDRESS.toString())))
+            .andExpect(jsonPath("$.[*].collegeIdentificationNumber").value(hasItem(DEFAULT_COLLEGE_IDENTIFICATION_NUMBER.toString())))
+            .andExpect(jsonPath("$.[*].pan").value(hasItem(DEFAULT_PAN.toString())))
+            .andExpect(jsonPath("$.[*].tan").value(hasItem(DEFAULT_TAN.toString())))
+            .andExpect(jsonPath("$.[*].tanCircleNumber").value(hasItem(DEFAULT_TAN_CIRCLE_NUMBER.toString())))
+            .andExpect(jsonPath("$.[*].citTdsLocation").value(hasItem(DEFAULT_CIT_TDS_LOCATION.toString())))
+            .andExpect(jsonPath("$.[*].formSignatory").value(hasItem(DEFAULT_FORM_SIGNATORY.toString())))
+            .andExpect(jsonPath("$.[*].pfNumber").value(hasItem(DEFAULT_PF_NUMBER.toString())))
             .andExpect(jsonPath("$.[*].registrationDate").value(hasItem(DEFAULT_REGISTRATION_DATE.toString())))
             .andExpect(jsonPath("$.[*].esiNumber").value(hasItem(DEFAULT_ESI_NUMBER.intValue())))
             .andExpect(jsonPath("$.[*].ptRegistrationDate").value(hasItem(DEFAULT_PT_REGISTRATION_DATE.toString())))
-            .andExpect(jsonPath("$.[*].ptSignatory").value(hasItem(DEFAULT_PT_SIGNATORY)))
+            .andExpect(jsonPath("$.[*].ptSignatory").value(hasItem(DEFAULT_PT_SIGNATORY.toString())))
             .andExpect(jsonPath("$.[*].ptNumber").value(hasItem(DEFAULT_PT_NUMBER.intValue())));
     }
 

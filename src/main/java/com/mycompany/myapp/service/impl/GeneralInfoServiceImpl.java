@@ -50,7 +50,6 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
     @Override
     public GeneralInfoDTO save(GeneralInfoDTO generalInfoDTO) {
         log.debug("Request to save GeneralInfo : {}", generalInfoDTO);
-
         GeneralInfo generalInfo = generalInfoMapper.toEntity(generalInfoDTO);
         generalInfo = generalInfoRepository.save(generalInfo);
         GeneralInfoDTO result = generalInfoMapper.toDto(generalInfo);

@@ -11,8 +11,8 @@ type EntityArrayResponseType = HttpResponse<IGeneralInfo[]>;
 
 @Injectable({ providedIn: 'root' })
 export class GeneralInfoService {
-    public resourceUrl = SERVER_API_URL + 'api/general-infos';
-    public resourceSearchUrl = SERVER_API_URL + 'api/_search/general-infos';
+    private resourceUrl = SERVER_API_URL + 'api/general-infos';
+    private resourceSearchUrl = SERVER_API_URL + 'api/_search/general-infos';
 
     constructor(private http: HttpClient) {}
 

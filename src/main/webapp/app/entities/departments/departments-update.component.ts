@@ -11,7 +11,7 @@ import { DepartmentsService } from './departments.service';
     templateUrl: './departments-update.component.html'
 })
 export class DepartmentsUpdateComponent implements OnInit {
-    departments: IDepartments;
+    private _departments: IDepartments;
     isSaving: boolean;
 
     constructor(private departmentsService: DepartmentsService, private activatedRoute: ActivatedRoute) {}
@@ -47,5 +47,12 @@ export class DepartmentsUpdateComponent implements OnInit {
 
     private onSaveError() {
         this.isSaving = false;
+    }
+    get departments() {
+        return this._departments;
+    }
+
+    set departments(departments: IDepartments) {
+        this._departments = departments;
     }
 }

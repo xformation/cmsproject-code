@@ -11,7 +11,7 @@ import { CollegeBranchesService } from './college-branches.service';
     templateUrl: './college-branches-update.component.html'
 })
 export class CollegeBranchesUpdateComponent implements OnInit {
-    collegeBranches: ICollegeBranches;
+    private _collegeBranches: ICollegeBranches;
     isSaving: boolean;
 
     constructor(private collegeBranchesService: CollegeBranchesService, private activatedRoute: ActivatedRoute) {}
@@ -47,5 +47,12 @@ export class CollegeBranchesUpdateComponent implements OnInit {
 
     private onSaveError() {
         this.isSaving = false;
+    }
+    get collegeBranches() {
+        return this._collegeBranches;
+    }
+
+    set collegeBranches(collegeBranches: ICollegeBranches) {
+        this._collegeBranches = collegeBranches;
     }
 }

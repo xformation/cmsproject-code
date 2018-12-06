@@ -187,8 +187,9 @@ public class Mutation implements GraphQLMutationResolver{
         return val;
     }
 	
-	public LegalEntityDTO newLegalEntity(Long id, String legalNameOfTheCollege, TypeOfCollege typeOfCollege, LocalDate dateOfIncorporation, String registeredOfficeAddress, String collegeIdentificationNumber, String pan, String tan, String tanCircleNumber, String citTdsLocation, String formSignatory, String pfNumber, LocalDate registrationDate, Long esiNumber, LocalDate ptRegistrationDate, String ptSignatory, Long ptNumber, Long authorizedSignatoryId  ) {
+	public LegalEntityDTO newLegalEntity(Long id,Long logo, String legalNameOfTheCollege, TypeOfCollege typeOfCollege, LocalDate dateOfIncorporation, String registeredOfficeAddress, String collegeIdentificationNumber, String pan, String tan, String tanCircleNumber, String citTdsLocation, String formSignatory, String pfNumber, LocalDate registrationDate, Long esiNumber, LocalDate ptRegistrationDate, String ptSignatory, Long ptNumber, Long authorizedSignatoryId  ) {
 		LegalEntityDTO legalEntityDTO =new LegalEntityDTO();
+		legalEntityDTO.setLogo(logo);
 		legalEntityDTO.setId(id);
 		legalEntityDTO.setLegalNameOfTheCollege(legalNameOfTheCollege);
 		legalEntityDTO.setTypeOfCollege(typeOfCollege);

@@ -52,7 +52,7 @@ public class SectionServiceImpl implements SectionService {
         Section section = sectionMapper.toEntity(sectionDTO);
         section = sectionRepository.save(section);
         SectionDTO result = sectionMapper.toDto(section);
-        //sectionSearchRepository.save(section);
+        sectionSearchRepository.save(section);
         return result;
     }
 

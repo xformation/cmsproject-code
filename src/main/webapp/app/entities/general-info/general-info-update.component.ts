@@ -11,7 +11,7 @@ import { GeneralInfoService } from './general-info.service';
     templateUrl: './general-info-update.component.html'
 })
 export class GeneralInfoUpdateComponent implements OnInit {
-    generalInfo: IGeneralInfo;
+    private _generalInfo: IGeneralInfo;
     isSaving: boolean;
 
     constructor(private generalInfoService: GeneralInfoService, private activatedRoute: ActivatedRoute) {}
@@ -47,5 +47,12 @@ export class GeneralInfoUpdateComponent implements OnInit {
 
     private onSaveError() {
         this.isSaving = false;
+    }
+    get generalInfo() {
+        return this._generalInfo;
+    }
+
+    set generalInfo(generalInfo: IGeneralInfo) {
+        this._generalInfo = generalInfo;
     }
 }

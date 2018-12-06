@@ -50,7 +50,6 @@ public class DepartmentsServiceImpl implements DepartmentsService {
     @Override
     public DepartmentsDTO save(DepartmentsDTO departmentsDTO) {
         log.debug("Request to save Departments : {}", departmentsDTO);
-
         Departments departments = departmentsMapper.toEntity(departmentsDTO);
         departments = departmentsRepository.save(departments);
         DepartmentsDTO result = departmentsMapper.toDto(departments);

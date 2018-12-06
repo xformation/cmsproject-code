@@ -14,8 +14,8 @@ type EntityArrayResponseType = HttpResponse<ILegalEntity[]>;
 
 @Injectable({ providedIn: 'root' })
 export class LegalEntityService {
-    public resourceUrl = SERVER_API_URL + 'api/legal-entities';
-    public resourceSearchUrl = SERVER_API_URL + 'api/_search/legal-entities';
+    private resourceUrl = SERVER_API_URL + 'api/legal-entities';
+    private resourceSearchUrl = SERVER_API_URL + 'api/_search/legal-entities';
 
     constructor(private http: HttpClient) {}
 
@@ -57,7 +57,7 @@ export class LegalEntityService {
             .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
     }
 
-    protected convertDateFromClient(legalEntity: ILegalEntity): ILegalEntity {
+    private convertDateFromClient(legalEntity: ILegalEntity): ILegalEntity {
         const copy: ILegalEntity = Object.assign({}, legalEntity, {
             dateOfIncorporation:
                 legalEntity.dateOfIncorporation != null && legalEntity.dateOfIncorporation.isValid()
@@ -75,23 +75,19 @@ export class LegalEntityService {
         return copy;
     }
 
-    protected convertDateFromServer(res: EntityResponseType): EntityResponseType {
-        if (res.body) {
-            res.body.dateOfIncorporation = res.body.dateOfIncorporation != null ? moment(res.body.dateOfIncorporation) : null;
-            res.body.registrationDate = res.body.registrationDate != null ? moment(res.body.registrationDate) : null;
-            res.body.ptRegistrationDate = res.body.ptRegistrationDate != null ? moment(res.body.ptRegistrationDate) : null;
-        }
+    private convertDateFromServer(res: EntityResponseType): EntityResponseType {
+        res.body.dateOfIncorporation = res.body.dateOfIncorporation != null ? moment(res.body.dateOfIncorporation) : null;
+        res.body.registrationDate = res.body.registrationDate != null ? moment(res.body.registrationDate) : null;
+        res.body.ptRegistrationDate = res.body.ptRegistrationDate != null ? moment(res.body.ptRegistrationDate) : null;
         return res;
     }
 
-    protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
-        if (res.body) {
-            res.body.forEach((legalEntity: ILegalEntity) => {
-                legalEntity.dateOfIncorporation = legalEntity.dateOfIncorporation != null ? moment(legalEntity.dateOfIncorporation) : null;
-                legalEntity.registrationDate = legalEntity.registrationDate != null ? moment(legalEntity.registrationDate) : null;
-                legalEntity.ptRegistrationDate = legalEntity.ptRegistrationDate != null ? moment(legalEntity.ptRegistrationDate) : null;
-            });
-        }
+    private convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
+        res.body.forEach((legalEntity: ILegalEntity) => {
+            legalEntity.dateOfIncorporation = legalEntity.dateOfIncorporation != null ? moment(legalEntity.dateOfIncorporation) : null;
+            legalEntity.registrationDate = legalEntity.registrationDate != null ? moment(legalEntity.registrationDate) : null;
+            legalEntity.ptRegistrationDate = legalEntity.ptRegistrationDate != null ? moment(legalEntity.ptRegistrationDate) : null;
+        });
         return res;
     }
 }

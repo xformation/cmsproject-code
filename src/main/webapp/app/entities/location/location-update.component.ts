@@ -11,7 +11,7 @@ import { LocationService } from './location.service';
     templateUrl: './location-update.component.html'
 })
 export class LocationUpdateComponent implements OnInit {
-    location: ILocation;
+    private _location: ILocation;
     isSaving: boolean;
 
     constructor(private locationService: LocationService, private activatedRoute: ActivatedRoute) {}
@@ -47,5 +47,12 @@ export class LocationUpdateComponent implements OnInit {
 
     private onSaveError() {
         this.isSaving = false;
+    }
+    get location() {
+        return this._location;
+    }
+
+    set location(location: ILocation) {
+        this._location = location;
     }
 }

@@ -79,6 +79,7 @@ PRIVATE, PUBLIC
 }
 
 entity LegalEntity{
+logo Long required 
 legalNameOfTheCollege  String  required
 typeOfCollege TypeOfCollege required
 dateOfIncorporation LocalDate required

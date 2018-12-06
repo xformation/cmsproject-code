@@ -31,6 +31,10 @@ public class LegalEntity implements Serializable {
     private Long id;
 
     @NotNull
+    @Column(name = "logo", nullable = false)
+    private Long logo;
+
+    @NotNull
     @Column(name = "legal_name_of_the_college", nullable = false)
     private String legalNameOfTheCollege;
 
@@ -106,6 +110,19 @@ public class LegalEntity implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getLogo() {
+        return logo;
+    }
+
+    public LegalEntity logo(Long logo) {
+        this.logo = logo;
+        return this;
+    }
+
+    public void setLogo(Long logo) {
+        this.logo = logo;
     }
 
     public String getLegalNameOfTheCollege() {
@@ -354,6 +371,7 @@ public class LegalEntity implements Serializable {
     public String toString() {
         return "LegalEntity{" +
             "id=" + getId() +
+            ", logo=" + getLogo() +
             ", legalNameOfTheCollege='" + getLegalNameOfTheCollege() + "'" +
             ", typeOfCollege='" + getTypeOfCollege() + "'" +
             ", dateOfIncorporation='" + getDateOfIncorporation() + "'" +

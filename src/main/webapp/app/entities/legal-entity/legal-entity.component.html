@@ -30,6 +30,7 @@
             <thead>
             <tr>
             <th><span>ID</span></th>
+            <th><span>Logo</span></th>
             <th><span>Legal Name Of The College</span></th>
             <th><span>Type Of College</span></th>
             <th><span>Date Of Incorporation</span></th>
@@ -53,6 +54,7 @@
             <tbody>
             <tr *ngFor="let legalEntity of legalEntities ;trackBy: trackId">
                 <td><a [routerLink]="['/legal-entity', legalEntity.id, 'view' ]">{{legalEntity.id}}</a></td>
+                <td>{{legalEntity.logo}}</td>
                 <td>{{legalEntity.legalNameOfTheCollege}}</td>
                 <td>{{legalEntity.typeOfCollege}}</td>
                 <td>{{legalEntity.dateOfIncorporation | date:'mediumDate'}}</td>

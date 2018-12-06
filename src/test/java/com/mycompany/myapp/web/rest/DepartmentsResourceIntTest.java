@@ -58,8 +58,10 @@ public class DepartmentsResourceIntTest {
     @Autowired
     private DepartmentsRepository departmentsRepository;
 
+
     @Autowired
     private DepartmentsMapper departmentsMapper;
+    
 
     @Autowired
     private DepartmentsService departmentsService;
@@ -238,6 +240,7 @@ public class DepartmentsResourceIntTest {
             .andExpect(jsonPath("$.[*].deptHead").value(hasItem(DEFAULT_DEPT_HEAD.toString())));
     }
     
+
     @Test
     @Transactional
     public void getDepartments() throws Exception {
@@ -253,7 +256,6 @@ public class DepartmentsResourceIntTest {
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
             .andExpect(jsonPath("$.deptHead").value(DEFAULT_DEPT_HEAD.toString()));
     }
-
     @Test
     @Transactional
     public void getNonExistingDepartments() throws Exception {
@@ -305,7 +307,7 @@ public class DepartmentsResourceIntTest {
         // Create the Departments
         DepartmentsDTO departmentsDTO = departmentsMapper.toDto(departments);
 
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException 
         restDepartmentsMockMvc.perform(put("/api/departments")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(departmentsDTO)))
@@ -352,9 +354,9 @@ public class DepartmentsResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(departments.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
-            .andExpect(jsonPath("$.[*].deptHead").value(hasItem(DEFAULT_DEPT_HEAD)));
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
+            .andExpect(jsonPath("$.[*].deptHead").value(hasItem(DEFAULT_DEPT_HEAD.toString())));
     }
 
     @Test

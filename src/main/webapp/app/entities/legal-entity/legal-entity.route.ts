@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
 import { UserRouteAccessService } from 'app/core';
-import { Observable, of } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { LegalEntity } from 'app/shared/model/legal-entity.model';
 import { LegalEntityService } from './legal-entity.service';
 import { LegalEntityComponent } from './legal-entity.component';
@@ -16,13 +16,10 @@ import { ILegalEntity } from 'app/shared/model/legal-entity.model';
 export class LegalEntityResolve implements Resolve<ILegalEntity> {
     constructor(private service: LegalEntityService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<LegalEntity> {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
-            return this.service.find(id).pipe(
-                filter((response: HttpResponse<LegalEntity>) => response.ok),
-                map((legalEntity: HttpResponse<LegalEntity>) => legalEntity.body)
-            );
+            return this.service.find(id).pipe(map((legalEntity: HttpResponse<LegalEntity>) => legalEntity.body));
         }
         return of(new LegalEntity());
     }

@@ -14,6 +14,9 @@ public class LegalEntityDTO implements Serializable {
     private Long id;
 
     @NotNull
+    private Long logo;
+
+    @NotNull
     private String legalNameOfTheCollege;
 
     @NotNull
@@ -69,6 +72,14 @@ public class LegalEntityDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getLogo() {
+        return logo;
+    }
+
+    public void setLogo(Long logo) {
+        this.logo = logo;
     }
 
     public String getLegalNameOfTheCollege() {
@@ -232,6 +243,7 @@ public class LegalEntityDTO implements Serializable {
     public String toString() {
         return "LegalEntityDTO{" +
             "id=" + getId() +
+            ", logo=" + getLogo() +
             ", legalNameOfTheCollege='" + getLegalNameOfTheCollege() + "'" +
             ", typeOfCollege='" + getTypeOfCollege() + "'" +
             ", dateOfIncorporation='" + getDateOfIncorporation() + "'" +

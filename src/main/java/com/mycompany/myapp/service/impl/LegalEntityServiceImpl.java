@@ -50,11 +50,10 @@ public class LegalEntityServiceImpl implements LegalEntityService {
     @Override
     public LegalEntityDTO save(LegalEntityDTO legalEntityDTO) {
         log.debug("Request to save LegalEntity : {}", legalEntityDTO);
-
         LegalEntity legalEntity = legalEntityMapper.toEntity(legalEntityDTO);
         legalEntity = legalEntityRepository.save(legalEntity);
         LegalEntityDTO result = legalEntityMapper.toDto(legalEntity);
-        legalEntitySearchRepository.save(legalEntity);
+        //legalEntitySearchRepository.save(legalEntity);
         return result;
     }
 

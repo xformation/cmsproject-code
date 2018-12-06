@@ -68,8 +68,10 @@ public class BankAccountsResourceIntTest {
     @Autowired
     private BankAccountsRepository bankAccountsRepository;
 
+
     @Autowired
     private BankAccountsMapper bankAccountsMapper;
+    
 
     @Autowired
     private BankAccountsService bankAccountsService;
@@ -314,6 +316,7 @@ public class BankAccountsResourceIntTest {
             .andExpect(jsonPath("$.[*].corporateId").value(hasItem(DEFAULT_CORPORATE_ID)));
     }
     
+
     @Test
     @Transactional
     public void getBankAccounts() throws Exception {
@@ -332,7 +335,6 @@ public class BankAccountsResourceIntTest {
             .andExpect(jsonPath("$.branch").value(DEFAULT_BRANCH.toString()))
             .andExpect(jsonPath("$.corporateId").value(DEFAULT_CORPORATE_ID));
     }
-
     @Test
     @Transactional
     public void getNonExistingBankAccounts() throws Exception {
@@ -390,7 +392,7 @@ public class BankAccountsResourceIntTest {
         // Create the BankAccounts
         BankAccountsDTO bankAccountsDTO = bankAccountsMapper.toDto(bankAccounts);
 
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException 
         restBankAccountsMockMvc.perform(put("/api/bank-accounts")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(bankAccountsDTO)))
@@ -439,9 +441,9 @@ public class BankAccountsResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(bankAccounts.getId().intValue())))
             .andExpect(jsonPath("$.[*].nameOfBank").value(hasItem(DEFAULT_NAME_OF_BANK.toString())))
             .andExpect(jsonPath("$.[*].accountNumber").value(hasItem(DEFAULT_ACCOUNT_NUMBER.intValue())))
-            .andExpect(jsonPath("$.[*].typeOfAccount").value(hasItem(DEFAULT_TYPE_OF_ACCOUNT)))
-            .andExpect(jsonPath("$.[*].ifsCode").value(hasItem(DEFAULT_IFS_CODE)))
-            .andExpect(jsonPath("$.[*].branch").value(hasItem(DEFAULT_BRANCH)))
+            .andExpect(jsonPath("$.[*].typeOfAccount").value(hasItem(DEFAULT_TYPE_OF_ACCOUNT.toString())))
+            .andExpect(jsonPath("$.[*].ifsCode").value(hasItem(DEFAULT_IFS_CODE.toString())))
+            .andExpect(jsonPath("$.[*].branch").value(hasItem(DEFAULT_BRANCH.toString())))
             .andExpect(jsonPath("$.[*].corporateId").value(hasItem(DEFAULT_CORPORATE_ID)));
     }
 

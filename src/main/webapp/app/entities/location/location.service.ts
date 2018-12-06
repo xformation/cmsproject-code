@@ -11,8 +11,8 @@ type EntityArrayResponseType = HttpResponse<ILocation[]>;
 
 @Injectable({ providedIn: 'root' })
 export class LocationService {
-    public resourceUrl = SERVER_API_URL + 'api/locations';
-    public resourceSearchUrl = SERVER_API_URL + 'api/_search/locations';
+    private resourceUrl = SERVER_API_URL + 'api/locations';
+    private resourceSearchUrl = SERVER_API_URL + 'api/_search/locations';
 
     constructor(private http: HttpClient) {}
 

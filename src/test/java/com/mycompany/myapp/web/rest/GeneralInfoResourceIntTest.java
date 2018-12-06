@@ -61,8 +61,10 @@ public class GeneralInfoResourceIntTest {
     @Autowired
     private GeneralInfoRepository generalInfoRepository;
 
+
     @Autowired
     private GeneralInfoMapper generalInfoMapper;
+    
 
     @Autowired
     private GeneralInfoService generalInfoService;
@@ -263,6 +265,7 @@ public class GeneralInfoResourceIntTest {
             .andExpect(jsonPath("$.[*].instructionInformation").value(hasItem(DEFAULT_INSTRUCTION_INFORMATION.toString())));
     }
     
+
     @Test
     @Transactional
     public void getGeneralInfo() throws Exception {
@@ -279,7 +282,6 @@ public class GeneralInfoResourceIntTest {
             .andExpect(jsonPath("$.backgroundImage").value(DEFAULT_BACKGROUND_IMAGE.intValue()))
             .andExpect(jsonPath("$.instructionInformation").value(DEFAULT_INSTRUCTION_INFORMATION.toString()));
     }
-
     @Test
     @Transactional
     public void getNonExistingGeneralInfo() throws Exception {
@@ -333,7 +335,7 @@ public class GeneralInfoResourceIntTest {
         // Create the GeneralInfo
         GeneralInfoDTO generalInfoDTO = generalInfoMapper.toDto(generalInfo);
 
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException 
         restGeneralInfoMockMvc.perform(put("/api/general-infos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(generalInfoDTO)))
@@ -380,10 +382,10 @@ public class GeneralInfoResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(generalInfo.getId().intValue())))
-            .andExpect(jsonPath("$.[*].shortName").value(hasItem(DEFAULT_SHORT_NAME)))
+            .andExpect(jsonPath("$.[*].shortName").value(hasItem(DEFAULT_SHORT_NAME.toString())))
             .andExpect(jsonPath("$.[*].logo").value(hasItem(DEFAULT_LOGO.intValue())))
             .andExpect(jsonPath("$.[*].backgroundImage").value(hasItem(DEFAULT_BACKGROUND_IMAGE.intValue())))
-            .andExpect(jsonPath("$.[*].instructionInformation").value(hasItem(DEFAULT_INSTRUCTION_INFORMATION)));
+            .andExpect(jsonPath("$.[*].instructionInformation").value(hasItem(DEFAULT_INSTRUCTION_INFORMATION.toString())));
     }
 
     @Test

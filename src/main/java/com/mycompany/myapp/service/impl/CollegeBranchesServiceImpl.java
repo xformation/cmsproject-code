@@ -50,7 +50,6 @@ public class CollegeBranchesServiceImpl implements CollegeBranchesService {
     @Override
     public CollegeBranchesDTO save(CollegeBranchesDTO collegeBranchesDTO) {
         log.debug("Request to save CollegeBranches : {}", collegeBranchesDTO);
-
         CollegeBranches collegeBranches = collegeBranchesMapper.toEntity(collegeBranchesDTO);
         collegeBranches = collegeBranchesRepository.save(collegeBranches);
         CollegeBranchesDTO result = collegeBranchesMapper.toDto(collegeBranches);

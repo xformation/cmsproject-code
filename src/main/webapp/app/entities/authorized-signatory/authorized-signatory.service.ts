@@ -11,8 +11,8 @@ type EntityArrayResponseType = HttpResponse<IAuthorizedSignatory[]>;
 
 @Injectable({ providedIn: 'root' })
 export class AuthorizedSignatoryService {
-    public resourceUrl = SERVER_API_URL + 'api/authorized-signatories';
-    public resourceSearchUrl = SERVER_API_URL + 'api/_search/authorized-signatories';
+    private resourceUrl = SERVER_API_URL + 'api/authorized-signatories';
+    private resourceSearchUrl = SERVER_API_URL + 'api/_search/authorized-signatories';
 
     constructor(private http: HttpClient) {}
 

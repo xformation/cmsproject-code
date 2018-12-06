@@ -52,7 +52,7 @@ public class TeacherServiceImpl implements TeacherService {
         Teacher teacher = teacherMapper.toEntity(teacherDTO);
         teacher = teacherRepository.save(teacher);
         TeacherDTO result = teacherMapper.toDto(teacher);
-        //teacherSearchRepository.save(teacher);
+        teacherSearchRepository.save(teacher);
         return result;
     }
 

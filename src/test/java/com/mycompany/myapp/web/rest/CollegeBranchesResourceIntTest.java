@@ -58,8 +58,10 @@ public class CollegeBranchesResourceIntTest {
     @Autowired
     private CollegeBranchesRepository collegeBranchesRepository;
 
+
     @Autowired
     private CollegeBranchesMapper collegeBranchesMapper;
+    
 
     @Autowired
     private CollegeBranchesService collegeBranchesService;
@@ -238,6 +240,7 @@ public class CollegeBranchesResourceIntTest {
             .andExpect(jsonPath("$.[*].collegeHead").value(hasItem(DEFAULT_COLLEGE_HEAD.toString())));
     }
     
+
     @Test
     @Transactional
     public void getCollegeBranches() throws Exception {
@@ -253,7 +256,6 @@ public class CollegeBranchesResourceIntTest {
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
             .andExpect(jsonPath("$.collegeHead").value(DEFAULT_COLLEGE_HEAD.toString()));
     }
-
     @Test
     @Transactional
     public void getNonExistingCollegeBranches() throws Exception {
@@ -305,7 +307,7 @@ public class CollegeBranchesResourceIntTest {
         // Create the CollegeBranches
         CollegeBranchesDTO collegeBranchesDTO = collegeBranchesMapper.toDto(collegeBranches);
 
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException 
         restCollegeBranchesMockMvc.perform(put("/api/college-branches")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(collegeBranchesDTO)))
@@ -352,9 +354,9 @@ public class CollegeBranchesResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(collegeBranches.getId().intValue())))
-            .andExpect(jsonPath("$.[*].branchName").value(hasItem(DEFAULT_BRANCH_NAME)))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
-            .andExpect(jsonPath("$.[*].collegeHead").value(hasItem(DEFAULT_COLLEGE_HEAD)));
+            .andExpect(jsonPath("$.[*].branchName").value(hasItem(DEFAULT_BRANCH_NAME.toString())))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
+            .andExpect(jsonPath("$.[*].collegeHead").value(hasItem(DEFAULT_COLLEGE_HEAD.toString())));
     }
 
     @Test

@@ -10,6 +10,21 @@
                         [(ngModel)]="legalEntity.id" readonly />
                 </div>
                 <div class="form-group">
+                    <label class="form-control-label" for="field_logo">Logo</label>
+                    <input type="number" class="form-control" name="logo" id="field_logo"
+                        [(ngModel)]="legalEntity.logo" required/>
+                    <div [hidden]="!(editForm.controls.logo?.dirty && editForm.controls.logo?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.logo?.errors?.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.logo?.errors?.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="form-control-label" for="field_legalNameOfTheCollege">Legal Name Of The College</label>
                     <input type="text" class="form-control" name="legalNameOfTheCollege" id="field_legalNameOfTheCollege"
                         [(ngModel)]="legalEntity.legalNameOfTheCollege" required/>

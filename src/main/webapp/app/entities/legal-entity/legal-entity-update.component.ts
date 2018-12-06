@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import * as moment from 'moment';
 import { JhiAlertService } from 'ng-jhipster';
 
 import { ILegalEntity } from 'app/shared/model/legal-entity.model';
@@ -15,7 +14,7 @@ import { AuthorizedSignatoryService } from 'app/entities/authorized-signatory';
     templateUrl: './legal-entity-update.component.html'
 })
 export class LegalEntityUpdateComponent implements OnInit {
-    legalEntity: ILegalEntity;
+    private _legalEntity: ILegalEntity;
     isSaving: boolean;
 
     authorizedsignatories: IAuthorizedSignatory[];
@@ -75,5 +74,12 @@ export class LegalEntityUpdateComponent implements OnInit {
 
     trackAuthorizedSignatoryById(index: number, item: IAuthorizedSignatory) {
         return item.id;
+    }
+    get legalEntity() {
+        return this._legalEntity;
+    }
+
+    set legalEntity(legalEntity: ILegalEntity) {
+        this._legalEntity = legalEntity;
     }
 }

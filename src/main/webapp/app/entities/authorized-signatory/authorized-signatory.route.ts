@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
 import { UserRouteAccessService } from 'app/core';
-import { Observable, of } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { AuthorizedSignatory } from 'app/shared/model/authorized-signatory.model';
 import { AuthorizedSignatoryService } from './authorized-signatory.service';
 import { AuthorizedSignatoryComponent } from './authorized-signatory.component';
@@ -16,13 +16,10 @@ import { IAuthorizedSignatory } from 'app/shared/model/authorized-signatory.mode
 export class AuthorizedSignatoryResolve implements Resolve<IAuthorizedSignatory> {
     constructor(private service: AuthorizedSignatoryService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<AuthorizedSignatory> {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
-            return this.service.find(id).pipe(
-                filter((response: HttpResponse<AuthorizedSignatory>) => response.ok),
-                map((authorizedSignatory: HttpResponse<AuthorizedSignatory>) => authorizedSignatory.body)
-            );
+            return this.service.find(id).pipe(map((authorizedSignatory: HttpResponse<AuthorizedSignatory>) => authorizedSignatory.body));
         }
         return of(new AuthorizedSignatory());
     }
