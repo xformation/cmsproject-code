@@ -1,14 +1,18 @@
 package com.mycompany.myapp.graphql.resolvers;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
+import com.mycompany.myapp.service.dto.AuthorizedSignatoryDTO;
+import com.mycompany.myapp.service.dto.BankAccountsDTO;
 import com.mycompany.myapp.service.dto.CollegeBranchesDTO;
 import com.mycompany.myapp.service.dto.DepartmentsDTO;
 import com.mycompany.myapp.service.dto.GeneralInfoDTO;
+import com.mycompany.myapp.service.dto.LegalEntityDTO;
 import com.mycompany.myapp.service.dto.LocationDTO;
 import com.mycompany.myapp.service.dto.PeriodsDTO;
 import com.mycompany.myapp.service.dto.SectionDTO;
@@ -16,9 +20,12 @@ import com.mycompany.myapp.service.dto.StudentDTO;
 import com.mycompany.myapp.service.dto.StudentYearDTO;
 import com.mycompany.myapp.service.dto.SubjectDTO;
 import com.mycompany.myapp.service.dto.TeacherDTO;
+import com.mycompany.myapp.service.impl.AuthorizedSignatoryServiceImpl;
+import com.mycompany.myapp.service.impl.BankAccountsServiceImpl;
 import com.mycompany.myapp.service.impl.CollegeBranchesServiceImpl;
 import com.mycompany.myapp.service.impl.DepartmentsServiceImpl;
 import com.mycompany.myapp.service.impl.GeneralInfoServiceImpl;
+import com.mycompany.myapp.service.impl.LegalEntityServiceImpl;
 import com.mycompany.myapp.service.impl.LocationServiceImpl;
 import com.mycompany.myapp.service.impl.PeriodsServiceImpl;
 import com.mycompany.myapp.service.impl.SectionServiceImpl;
@@ -63,7 +70,15 @@ public class Query implements GraphQLQueryResolver{
 	 @Autowired
 	 private GeneralInfoServiceImpl generalInfoServiceImpl;
 
-	
+	 @Autowired
+	 private LegalEntityServiceImpl legalEntityServiceImpl;
+	 
+	 @Autowired
+	 private AuthorizedSignatoryServiceImpl authorizedSignatoryServiceImpl;
+	 
+	 @Autowired
+	 private BankAccountsServiceImpl bankAccountsServiceImpl;
+	 
 //	public SubjectsDTO find(Long id) {
 //		Optional<SubjectsDTO> val = subjectsService.findOne(id);
 //		if(val.isPresent()) {
@@ -72,6 +87,11 @@ public class Query implements GraphQLQueryResolver{
 //		return new SubjectsDTO();
 //	}
 	
+	 
+	 public LocalDate getNow() {
+	        return LocalDate.now();
+	    }
+	 
 	public StudentYearDTO findStudentYear(Long id) {
         Optional<StudentYearDTO> val = studentYearServiceImpl.findOne(id);
         if (val.isPresent()) {
@@ -150,6 +170,30 @@ public class Query implements GraphQLQueryResolver{
 		 		return val.get();		 		
 		 	}
 		 	return new GeneralInfoDTO();
+	 }
+	 
+	 public LegalEntityDTO findLegalEntity(Long id) {
+	     Optional<LegalEntityDTO> val = legalEntityServiceImpl.findOne(id);
+	     if (val.isPresent()) {
+	         return val.get();
+	     }
+	     return new LegalEntityDTO();
+	 }
+	 
+	 public AuthorizedSignatoryDTO findAuthorizedSignatory(Long id) {
+	     Optional<AuthorizedSignatoryDTO> val = authorizedSignatoryServiceImpl.findOne(id);
+	     if (val.isPresent()) {
+	         return val.get();
+	     }
+	     return new AuthorizedSignatoryDTO();
+	 }
+	 
+	 public BankAccountsDTO findBankAccounts(Long id) {
+	     Optional<BankAccountsDTO> val = bankAccountsServiceImpl.findOne(id);
+	     if (val.isPresent()) {
+	         return val.get();
+	     }
+	     return new BankAccountsDTO();
 	 }
 
 }

@@ -10,6 +10,9 @@ import { CmsprojectCollegeBranchesModule } from './college-branches/college-bran
 import { CmsprojectDepartmentsModule } from './departments/departments.module';
 import { CmsprojectLocationModule } from './location/location.module';
 import { CmsprojectGeneralInfoModule } from './general-info/general-info.module';
+import { CmsprojectLegalEntityModule } from './legal-entity/legal-entity.module';
+import { CmsprojectAuthorizedSignatoryModule } from './authorized-signatory/authorized-signatory.module';
+import { CmsprojectBankAccountsModule } from './bank-accounts/bank-accounts.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -25,6 +28,9 @@ import { CmsprojectGeneralInfoModule } from './general-info/general-info.module'
         CmsprojectDepartmentsModule,
         CmsprojectLocationModule,
         CmsprojectGeneralInfoModule,
+        CmsprojectLegalEntityModule,
+        CmsprojectAuthorizedSignatoryModule,
+        CmsprojectBankAccountsModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],

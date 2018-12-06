@@ -91,6 +91,10 @@ graphql:
     mapping: /graphql
     enabled: true
     corsEnabled: true
+    datetime:
+    scalars:
+      localDate:
+        scalarName: LocalDate
 
 
 # ===================================================================

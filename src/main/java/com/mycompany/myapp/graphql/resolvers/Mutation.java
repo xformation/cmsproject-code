@@ -1,5 +1,8 @@
 package com.mycompany.myapp.graphql.resolvers;
 
+
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -8,10 +11,15 @@ import com.mycompany.myapp.domain.enumeration.ClassPeriods;
 import com.mycompany.myapp.domain.enumeration.ClassSection;
 import com.mycompany.myapp.domain.enumeration.Common;
 import com.mycompany.myapp.domain.enumeration.Elective;
+import com.mycompany.myapp.domain.enumeration.NameOfBank;
 import com.mycompany.myapp.domain.enumeration.SYear;
+import com.mycompany.myapp.domain.enumeration.TypeOfCollege;
+import com.mycompany.myapp.service.dto.AuthorizedSignatoryDTO;
+import com.mycompany.myapp.service.dto.BankAccountsDTO;
 import com.mycompany.myapp.service.dto.CollegeBranchesDTO;
 import com.mycompany.myapp.service.dto.DepartmentsDTO;
 import com.mycompany.myapp.service.dto.GeneralInfoDTO;
+import com.mycompany.myapp.service.dto.LegalEntityDTO;
 import com.mycompany.myapp.service.dto.LocationDTO;
 import com.mycompany.myapp.service.dto.PeriodsDTO;
 import com.mycompany.myapp.service.dto.SectionDTO;
@@ -19,9 +27,12 @@ import com.mycompany.myapp.service.dto.StudentDTO;
 import com.mycompany.myapp.service.dto.StudentYearDTO;
 import com.mycompany.myapp.service.dto.SubjectDTO;
 import com.mycompany.myapp.service.dto.TeacherDTO;
+import com.mycompany.myapp.service.impl.AuthorizedSignatoryServiceImpl;
+import com.mycompany.myapp.service.impl.BankAccountsServiceImpl;
 import com.mycompany.myapp.service.impl.CollegeBranchesServiceImpl;
 import com.mycompany.myapp.service.impl.DepartmentsServiceImpl;
 import com.mycompany.myapp.service.impl.GeneralInfoServiceImpl;
+import com.mycompany.myapp.service.impl.LegalEntityServiceImpl;
 import com.mycompany.myapp.service.impl.LocationServiceImpl;
 import com.mycompany.myapp.service.impl.PeriodsServiceImpl;
 import com.mycompany.myapp.service.impl.SectionServiceImpl;
@@ -33,7 +44,9 @@ import com.mycompany.myapp.service.impl.TeacherServiceImpl;
 @Component
 public class Mutation implements GraphQLMutationResolver{
 
-
+	public LocalDate plusDay(LocalDate input) {
+        return input.plusDays(1);
+    }
 	
 	@Autowired
 	private StudentYearServiceImpl studentYearServiceImpl;
@@ -64,6 +77,16 @@ public class Mutation implements GraphQLMutationResolver{
 	 
 	 @Autowired
 	 private GeneralInfoServiceImpl generalInfoServiceImpl;
+	 
+	 @Autowired
+	 private LegalEntityServiceImpl legalEntityServiceImpl;
+		
+	 @Autowired
+	 private AuthorizedSignatoryServiceImpl authorizedSignatoryServiceImpl;
+		
+	 @Autowired
+	 private BankAccountsServiceImpl bankAccountsServiceImpl;
+		
 
 	
 	public StudentYearDTO newStudentYear(Long id, SYear sYear) {
@@ -163,5 +186,60 @@ public class Mutation implements GraphQLMutationResolver{
         GeneralInfoDTO val = generalInfoServiceImpl.save(generalInfoDTO);
         return val;
     }
+	
+	public LegalEntityDTO newLegalEntity(Long id, String legalNameOfTheCollege, TypeOfCollege typeOfCollege, LocalDate dateOfIncorporation, String registeredOfficeAddress, String collegeIdentificationNumber, String pan, String tan, String tanCircleNumber, String citTdsLocation, String formSignatory, String pfNumber, LocalDate registrationDate, Long esiNumber, LocalDate ptRegistrationDate, String ptSignatory, Long ptNumber, Long authorizedSignatoryId  ) {
+		LegalEntityDTO legalEntityDTO =new LegalEntityDTO();
+		legalEntityDTO.setId(id);
+		legalEntityDTO.setLegalNameOfTheCollege(legalNameOfTheCollege);
+		legalEntityDTO.setTypeOfCollege(typeOfCollege);
+		legalEntityDTO.setDateOfIncorporation(dateOfIncorporation);
+		legalEntityDTO.setRegisteredOfficeAddress(registeredOfficeAddress);
+		legalEntityDTO.setCollegeIdentificationNumber(collegeIdentificationNumber);
+		legalEntityDTO.setPan(pan);
+		legalEntityDTO.setTan(tan);
+		legalEntityDTO.setTanCircleNumber(tanCircleNumber);
+		legalEntityDTO.setCitTdsLocation(citTdsLocation);
+		legalEntityDTO.setFormSignatory(formSignatory);
+		legalEntityDTO.setPfNumber(pfNumber);
+		legalEntityDTO.setRegistrationDate(registrationDate);
+		legalEntityDTO.setEsiNumber(esiNumber);
+		legalEntityDTO.setPtRegistrationDate(ptRegistrationDate);
+		legalEntityDTO.setPtSignatory(ptSignatory);
+		legalEntityDTO.setPtNumber(ptNumber);
+		legalEntityDTO.setAuthorizedSignatoryId(authorizedSignatoryId);
+		LegalEntityDTO val = legalEntityServiceImpl.save(legalEntityDTO);
+        return val ;
+		
+	}
+	
+	public AuthorizedSignatoryDTO newAuthorizedSignatory(Long id, String signatoryName, String signatoryFatherName, String signatoryDesignation, String address, String email, String panCardNumber) {
+		AuthorizedSignatoryDTO authorizedSignatoryDTO =new AuthorizedSignatoryDTO();
+		authorizedSignatoryDTO.setId(id);
+		authorizedSignatoryDTO.setSignatoryName(signatoryName);
+		authorizedSignatoryDTO.setSignatoryFatherName(signatoryFatherName);
+		authorizedSignatoryDTO.setSignatoryDesignation(signatoryDesignation);
+		authorizedSignatoryDTO.setAddress(address);
+		authorizedSignatoryDTO.setEmail(email);
+		authorizedSignatoryDTO.setPanCardNumber(panCardNumber);
+		AuthorizedSignatoryDTO val = authorizedSignatoryServiceImpl.save(authorizedSignatoryDTO);
+        return val ;
+		
+	}
+	
+	public BankAccountsDTO newBankAccounts(Long id, NameOfBank nameOfBank, Long accountNumber, String typeOfAccount, String ifsCode, String branch, Integer corporateId) {
+		BankAccountsDTO bankAccountsDTO =new BankAccountsDTO();
+		bankAccountsDTO.setId(id);
+		bankAccountsDTO.setNameOfBank(nameOfBank);
+		bankAccountsDTO.setAccountNumber(accountNumber);
+		bankAccountsDTO.setTypeOfAccount(typeOfAccount);
+		bankAccountsDTO.setIfsCode(ifsCode);
+		bankAccountsDTO.setBranch(branch);
+		bankAccountsDTO.setCorporateId(corporateId);
+		BankAccountsDTO val = bankAccountsServiceImpl.save(bankAccountsDTO);
+        return val ;
+		
+	}
+	
+	
 }
 

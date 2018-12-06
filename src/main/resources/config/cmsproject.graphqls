@@ -1,3 +1,5 @@
+scalar LocalDate
+
 enum SYear {
   I
   II
@@ -102,6 +104,55 @@ type GeneralInfoDTO{
 	instructionInformation: String!	
 }
 
+enum NameOfBank{
+HDFC, SBI, ICICI, ANDHRABANK
+}
+
+enum TypeOfCollege{
+PRIVATE, PUBLIC
+}
+
+type LegalEntityDTO {
+  id: ID!
+  legalNameOfTheCollege: String
+  typeOfCollege: String
+  dateOfIncorporation:LocalDate!
+  registeredOfficeAddress: String!
+  collegeIdentificationNumber: String!
+  pan: String!
+  tan: String!
+  tanCircleNumber: String!
+  citTdsLocation: String!
+  formSignatory: String!
+  pfNumber: String!
+  registrationDate: LocalDate!
+  esiNumber: Long!
+  ptRegistrationDate: LocalDate!
+  ptSignatory: String!
+  ptNumber: Long!
+  authorizedSignatoryId: Long!
+  
+}
+type AuthorizedSignatoryDTO{
+   signatoryName: String
+   signatoryFatherName: String!
+   signatoryDesignation: String!
+   address: String!
+   email: String!
+   panCardNumber: String!
+
+}
+
+type BankAccountsDTO{
+    nameOfBank: String
+    accountNumber: Long!
+    typeOfAccount: String!
+    ifsCode: String!
+    branch: String!
+    corporateId: Long!
+}
+
+
 type Query {
   findStudentYear(id:ID!): StudentYearDTO
   findSection(id:ID!): SectionDTO
@@ -113,6 +164,10 @@ type Query {
   findDepartments(id:ID!): DepartmentsDTO
   findLocation(id:ID!): LocationDTO
   findGeneralInfo(id : ID!): GeneralInfoDTO
+  findLegalEntity(id:ID!): LegalEntityDTO
+  findAuthorizedSignatory(id:ID!): AuthorizedSignatoryDTO
+  findBankAccounts(id:ID!): BankAccountsDTO
+  now: LocalDate
 }
 
 
@@ -127,4 +182,8 @@ type Mutation {
   newDepartments(id:ID!,name: String!, description: String!, deptHead: String!): DepartmentsDTO!
   newLocation(id:ID!,name: String!, address: String!, appliesTo: String!): LocationDTO!
   newGeneralInfo(id:ID!,shortName: String!, logo: Long!, backgroundImage: Long!, instructionInformation: String!):GeneralInfoDTO!
+  newLegalEntity(id:ID!,  legalNameOfTheCollege: String!, typeOfCollege: TypeOfCollege!, dateOfIncorporation: LocalDate!, registeredOfficeAddress: String!, collegeIdentificationNumber: String!, pan: String!, tan: String!, tanCircleNumber: String!, citTdsLocation: String!, formSignatory: String!, pfNumber: String!, registrationDate: LocalDate!, esiNumber: Long!, ptRegistrationDate: LocalDate!, ptSignatory: String!, ptNumber: Long!, authorizedSignatoryId: Long! ): LegalEntityDTO
+  newAuthorizedSignatory(id:ID!, signatoryName: String!, signatoryFatherName: String!, signatoryDesignation: String!, address: String!, email: String!, panCardNumber: String!): AuthorizedSignatoryDTO
+  newBankAccounts(id:ID!, nameOfBank: NameOfBank!, accountNumber: Long!, typeOfAccount: String!, ifsCode: String!, branch: String!,corporateId: Long): BankAccountsDTO
+  plusDay(input: LocalDate!): LocalDate!
 }
