@@ -96,7 +96,7 @@ public class Mutation implements GraphQLMutationResolver{
 		StudentYearDTO val =studentYearServiceImpl.save(studentYearDTO);
 		return val;
 	}
-	
+
 	public SectionDTO newSection(Long id, ClassSection section, Long studentYearId) {
         SectionDTO sectionDTO = new SectionDTO();
         sectionDTO.setId(id);
