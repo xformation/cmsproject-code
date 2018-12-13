@@ -1,11 +1,20 @@
 package com.mycompany.myapp.service;
 
-import com.mycompany.myapp.service.dto.StudentDTO;
+import java.util.Collection;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.Optional;
+import com.mycompany.myapp.domain.Student;
+import com.mycompany.myapp.graphql.resolvers.StudentFilter;
+import com.mycompany.myapp.graphql.resolvers.StudentOrder;
+import com.mycompany.myapp.service.dto.StudentDTO;
+
+
 
 /**
  * Service Interface for managing Student.
@@ -53,4 +62,7 @@ public interface StudentService {
      * @return the list of entities
      */
     Page<StudentDTO> search(String query, Pageable pageable);
+    
+    Collection<Student> findAllByFilterOrder(StudentFilter filter, List<StudentOrder> orders) throws  DataAccessException;
+    
 }

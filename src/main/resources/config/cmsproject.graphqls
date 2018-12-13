@@ -153,6 +153,32 @@ type BankAccountsDTO{
     corporateId: Long!
 }
 
+input StudentFilter {
+  sName: String
+}
+
+enum OrderType {
+  ASC
+  DESC
+}
+
+enum OrderField {
+  id
+  sName
+}
+
+input StudentOrder {
+  field: OrderField
+  order: OrderType
+}
+
+type Student {
+    id: ID!
+    sName: String!
+    attendance: Boolean!
+    electiveSub: String!
+}
+
 
 type Query {
   findStudentYear(id:ID!): StudentYearDTO
@@ -167,13 +193,14 @@ type Query {
   findGeneralInfo(id : ID!): GeneralInfoDTO
   findLegalEntity(id:ID!): LegalEntityDTO
   findAuthorizedSignatory(id:ID!): AuthorizedSignatoryDTO
+  students(filter: StudentFilter, orders: [StudentOrder!]): [Student!]!
   findBankAccounts(id:ID!): BankAccountsDTO
   now: LocalDate
 }
 
 
 type Mutation {
-  newStudentYear(id: ID!, s_year: SYear): StudentYearDTO!
+  newStudentYear(id: ID! s_year: SYear): StudentYearDTO!
   newSection(id: ID!, section: ClassSection!, studentyearId: Long!): SectionDTO!
   newPeriods(id: ID!, periods: ClassPeriods!, sectionId: Long!): PeriodsDTO!
   newTeacher(id: ID!, tName: String!, periodsId: Long!): TeacherDTO!
@@ -183,8 +210,21 @@ type Mutation {
   newDepartments(id:ID!,name: String!, description: String!, deptHead: String!): DepartmentsDTO!
   newLocation(id:ID!,name: String!, address: String!, appliesTo: String!): LocationDTO!
   newGeneralInfo(id:ID!,shortName: String!, logo: Long!, backgroundImage: Long!, instructionInformation: String!):GeneralInfoDTO!
-  newLegalEntity(id:ID!, logo:Long,  legalNameOfTheCollege: String!, typeOfCollege: TypeOfCollege!, dateOfIncorporation: LocalDate!, registeredOfficeAddress: String!, collegeIdentificationNumber: String!, pan: String!, tan: String!, tanCircleNumber: String!, citTdsLocation: String!, formSignatory: String!, pfNumber: String!, registrationDate: LocalDate!, esiNumber: Long!, ptRegistrationDate: LocalDate!, ptSignatory: String!, ptNumber: Long!, authorizedSignatoryId: Long! ): LegalEntityDTO
+  newLegalEntity(id:ID!, logo:Long, legalNameOfTheCollege: String!, typeOfCollege: TypeOfCollege!, dateOfIncorporation: LocalDate!, registeredOfficeAddress: String!, collegeIdentificationNumber: String!, pan: String!, tan: String!, tanCircleNumber: String!, citTdsLocation: String!, formSignatory: String!, pfNumber: String!, registrationDate: LocalDate!, esiNumber: Long!, ptRegistrationDate: LocalDate!, ptSignatory: String!, ptNumber: Long!, authorizedSignatoryId: Long! ): LegalEntityDTO
   newAuthorizedSignatory(id:ID!, signatoryName: String!, signatoryFatherName: String!, signatoryDesignation: String!, address: String!, email: String!, panCardNumber: String!): AuthorizedSignatoryDTO
   newBankAccounts(id:ID!, nameOfBank: NameOfBank!, accountNumber: Long!, typeOfAccount: String!, ifsCode: String!, branch: String!,corporateId: Long): BankAccountsDTO
+  deleteStudentYear(id: ID!): Boolean!
+  deleteSection(id: ID!): Boolean!
+  deletePeriods(id: ID!): Boolean!
+  deleteTeacher(id: ID!): Boolean!
+  deleteStudent(id: ID!): Boolean!
+  deleteSubject(id: ID!): Boolean!
+  deleteLegalEntity(id: ID!): Boolean!
+  deleteAuthorizedSignatory(id: ID!): Boolean!
+  deleteBankAccounts(id: ID!): Boolean!
+  deleteCollegeBranches(id: ID!): Boolean!
+  deleteDepartments(id: ID!): Boolean!
+  deleteLocation(id: ID!): Boolean!
+  deleteGeneralInfo(id: ID!): Boolean!
   plusDay(input: LocalDate!): LocalDate!
 }

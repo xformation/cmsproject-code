@@ -89,14 +89,20 @@ public class Mutation implements GraphQLMutationResolver{
 		
 
 	
-	public StudentYearDTO newStudentYear(Long id, SYear sYear) {
+	public StudentYearDTO newStudentYear(Long id,SYear sYear) {
 		StudentYearDTO studentYearDTO = new StudentYearDTO();
 		studentYearDTO.setId(id);
 		studentYearDTO.setsYear(sYear);
 		StudentYearDTO val =studentYearServiceImpl.save(studentYearDTO);
 		return val;
 	}
-
+	
+	
+	public boolean deleteStudentYear(Long id) {
+		studentYearServiceImpl.delete(id);
+        return true;
+    }
+	
 	public SectionDTO newSection(Long id, ClassSection section, Long studentYearId) {
         SectionDTO sectionDTO = new SectionDTO();
         sectionDTO.setId(id);
@@ -104,6 +110,11 @@ public class Mutation implements GraphQLMutationResolver{
         sectionDTO.setStudentyearId(studentYearId);
         SectionDTO val = sectionServiceImpl.save(sectionDTO);
         return val;
+    }
+	
+	public boolean deleteSection(Long id) {
+		sectionServiceImpl.delete(id);
+        return true;
     }
 	
 	public PeriodsDTO newPeriods(Long id, ClassPeriods periods, Long sectionId) {
@@ -115,6 +126,11 @@ public class Mutation implements GraphQLMutationResolver{
 	    return val;
 	    }
 	
+	public boolean deletePeriods(Long id) {
+		periodsServiceImpl.delete(id);
+        return true;
+    }
+	
 	public TeacherDTO newTeacher(Long id,String tName,Long periodsId){
         TeacherDTO teacherDTO = new TeacherDTO();
         teacherDTO.setId(id);
@@ -123,6 +139,12 @@ public class Mutation implements GraphQLMutationResolver{
         TeacherDTO val = teacherServiceImpl.save(teacherDTO);
         return val;
     }
+	
+	public boolean deleteTeacher(Long id) {
+		teacherServiceImpl.delete(id);
+        return true;
+    }
+
 	
 	public StudentDTO newStudent(Long id,String sName,Boolean attendance,Elective electiveSub,Long teacherId){
         StudentDTO studentDTO = new StudentDTO();
@@ -133,6 +155,11 @@ public class Mutation implements GraphQLMutationResolver{
         studentDTO.setTeacherId(teacherId);
         StudentDTO val = studentServiceImpl.save(studentDTO);
         return val;
+    }
+	
+	public boolean deleteStudent(Long id) {
+		studentServiceImpl.delete(id);
+        return true;
     }
 	
 	public SubjectDTO newSubject(Long id, Common commonSub, Elective electiveSub, Long periodsId, Long studentId, Long teacherId) {
@@ -147,6 +174,11 @@ public class Mutation implements GraphQLMutationResolver{
         return val;
     }
 	
+	public boolean deleteSubject(Long id) {
+		subjectServiceImpl.delete(id);
+        return true;
+    }
+	
 	public CollegeBranchesDTO newCollegeBranches(Long id,String branchName,String description,String collegeHead) {
 		  CollegeBranchesDTO collegeBranchesDTO = new CollegeBranchesDTO();
 		  collegeBranchesDTO.setId(id);
@@ -157,6 +189,11 @@ public class Mutation implements GraphQLMutationResolver{
 	      return val;
 		}
 	
+	public boolean deleteCollegeBranches(Long id) {
+		collegeBranchesServiceImpl.delete(id);
+        return true;
+    }
+
 	public DepartmentsDTO newDepartments(Long id,String name,String description,String deptHead) {
 	    DepartmentsDTO departmentsDTO = new DepartmentsDTO();
 	    departmentsDTO.setId(id);
@@ -166,6 +203,12 @@ public class Mutation implements GraphQLMutationResolver{
 	    DepartmentsDTO val = departmentsServiceImpl.save(departmentsDTO);
 	    return val;
 	}
+	
+	public boolean deleteDepartments(Long id) {
+		departmentsServiceImpl.delete(id);
+        return true;
+    }
+
 	public LocationDTO newLocation(Long id,String name,String address,String appliesTo) {
 		LocationDTO locationDTO = new LocationDTO();
 		locationDTO.setId(id);
@@ -175,6 +218,12 @@ public class Mutation implements GraphQLMutationResolver{
 		LocationDTO val = locationServiceImpl.save(locationDTO);
 		return val;
 	}
+	
+	public boolean deleteLocation(Long id) {
+		locationServiceImpl.delete(id);
+        return true;
+    }
+
 	
 	public GeneralInfoDTO newGeneralInfo(Long id, String shortName, Long logo, Long backgroundImage, String instructionInformation) {
         GeneralInfoDTO generalInfoDTO = new GeneralInfoDTO();
@@ -187,10 +236,16 @@ public class Mutation implements GraphQLMutationResolver{
         return val;
     }
 	
+	public boolean deleteGeneralInfo(Long id) {
+		generalInfoServiceImpl.delete(id);
+        return true;
+    }
+
+	
 	public LegalEntityDTO newLegalEntity(Long id,Long logo, String legalNameOfTheCollege, TypeOfCollege typeOfCollege, LocalDate dateOfIncorporation, String registeredOfficeAddress, String collegeIdentificationNumber, String pan, String tan, String tanCircleNumber, String citTdsLocation, String formSignatory, String pfNumber, LocalDate registrationDate, Long esiNumber, LocalDate ptRegistrationDate, String ptSignatory, Long ptNumber, Long authorizedSignatoryId  ) {
 		LegalEntityDTO legalEntityDTO =new LegalEntityDTO();
-		legalEntityDTO.setLogo(logo);
 		legalEntityDTO.setId(id);
+		legalEntityDTO.setLogo(logo);
 		legalEntityDTO.setLegalNameOfTheCollege(legalNameOfTheCollege);
 		legalEntityDTO.setTypeOfCollege(typeOfCollege);
 		legalEntityDTO.setDateOfIncorporation(dateOfIncorporation);
@@ -213,6 +268,12 @@ public class Mutation implements GraphQLMutationResolver{
 		
 	}
 	
+	public boolean deleteLegalEntity(Long id) {
+		legalEntityServiceImpl.delete(id);
+        return true;
+    }
+
+	
 	public AuthorizedSignatoryDTO newAuthorizedSignatory(Long id, String signatoryName, String signatoryFatherName, String signatoryDesignation, String address, String email, String panCardNumber) {
 		AuthorizedSignatoryDTO authorizedSignatoryDTO =new AuthorizedSignatoryDTO();
 		authorizedSignatoryDTO.setId(id);
@@ -226,6 +287,12 @@ public class Mutation implements GraphQLMutationResolver{
         return val ;
 		
 	}
+	
+	public boolean deleteAuthorizedSignatory(Long id) {
+		authorizedSignatoryServiceImpl.delete(id);
+        return true;
+    }
+
 	
 	public BankAccountsDTO newBankAccounts(Long id, NameOfBank nameOfBank, Long accountNumber, String typeOfAccount, String ifsCode, String branch, Integer corporateId) {
 		BankAccountsDTO bankAccountsDTO =new BankAccountsDTO();
@@ -241,6 +308,11 @@ public class Mutation implements GraphQLMutationResolver{
 		
 	}
 	
+	public boolean deleteBankAccounts(Long id) {
+		bankAccountsServiceImpl.delete(id);
+        return true;
+    }
+
 	
 }
 

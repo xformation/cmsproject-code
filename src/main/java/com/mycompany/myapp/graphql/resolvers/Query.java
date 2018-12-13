@@ -1,12 +1,15 @@
 package com.mycompany.myapp.graphql.resolvers;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
+import com.google.common.collect.Lists;
+import com.mycompany.myapp.domain.Student;
 import com.mycompany.myapp.service.dto.AuthorizedSignatoryDTO;
 import com.mycompany.myapp.service.dto.BankAccountsDTO;
 import com.mycompany.myapp.service.dto.CollegeBranchesDTO;
@@ -130,6 +133,10 @@ public class Query implements GraphQLQueryResolver{
 	            return val.get();
 	        }
 	        return new StudentDTO();
+	    }
+	 
+	 public List<Student> students(StudentFilter filter, List<StudentOrder> orders) {
+	        return Lists.newArrayList(studentServiceImpl.findAllByFilterOrder(filter, orders));
 	    }
 	 
 	 public SubjectDTO findSubject(Long id) {
