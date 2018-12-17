@@ -133,7 +133,8 @@ public class StudentServiceImpl implements StudentService {
         nonNullFilter.ifPresent(f -> sb.append(f.buildJpaQuery()));
 
         sb.append(StudentOrder.buildOrderJpaQuery(orders));
-
+        
+        System.out.println("studentfilter"+sb.toString());
         Query query = this.em.createQuery(sb.toString());
         nonNullFilter.ifPresent(f -> f.buildJpaQueryParameters(query));
 
