@@ -13,6 +13,8 @@ import com.mycompany.myapp.domain.enumeration.Common;
 import com.mycompany.myapp.domain.enumeration.Elective;
 import com.mycompany.myapp.domain.enumeration.NameOfBank;
 import com.mycompany.myapp.domain.enumeration.SYear;
+import com.mycompany.myapp.domain.enumeration.Sem;
+import com.mycompany.myapp.domain.enumeration.Status;
 import com.mycompany.myapp.domain.enumeration.TypeOfCollege;
 import com.mycompany.myapp.service.dto.AuthorizedSignatoryDTO;
 import com.mycompany.myapp.service.dto.BankAccountsDTO;
@@ -23,6 +25,8 @@ import com.mycompany.myapp.service.dto.LegalEntityDTO;
 import com.mycompany.myapp.service.dto.LocationDTO;
 import com.mycompany.myapp.service.dto.PeriodsDTO;
 import com.mycompany.myapp.service.dto.SectionDTO;
+import com.mycompany.myapp.service.dto.SemesterDTO;
+import com.mycompany.myapp.service.dto.StudentAttendanceDTO;
 import com.mycompany.myapp.service.dto.StudentDTO;
 import com.mycompany.myapp.service.dto.StudentYearDTO;
 import com.mycompany.myapp.service.dto.SubjectDTO;
@@ -36,6 +40,8 @@ import com.mycompany.myapp.service.impl.LegalEntityServiceImpl;
 import com.mycompany.myapp.service.impl.LocationServiceImpl;
 import com.mycompany.myapp.service.impl.PeriodsServiceImpl;
 import com.mycompany.myapp.service.impl.SectionServiceImpl;
+import com.mycompany.myapp.service.impl.SemesterServiceImpl;
+import com.mycompany.myapp.service.impl.StudentAttendanceServiceImpl;
 import com.mycompany.myapp.service.impl.StudentServiceImpl;
 import com.mycompany.myapp.service.impl.StudentYearServiceImpl;
 import com.mycompany.myapp.service.impl.SubjectServiceImpl;
@@ -86,8 +92,12 @@ public class Mutation implements GraphQLMutationResolver{
 		
 	 @Autowired
 	 private BankAccountsServiceImpl bankAccountsServiceImpl;
+	 
+	 @Autowired
+	 private StudentAttendanceServiceImpl studentAttendanceServiceImpl;
 		
-
+	 @Autowired
+	 private SemesterServiceImpl semesterServiceImpl;
 	
 	public StudentYearDTO newStudentYear(Long id,SYear sYear) {
 		StudentYearDTO studentYearDTO = new StudentYearDTO();
@@ -100,6 +110,44 @@ public class Mutation implements GraphQLMutationResolver{
 	
 	public boolean deleteStudentYear(Long id) {
 		studentYearServiceImpl.delete(id);
+        return true;
+    }
+	
+	public StudentAttendanceDTO newStudentAttendance(Long id,LocalDate attendanceDate,Status status,String comments,Long studentYearId,Long departmentsId,
+			Long subjectId,Long semesterId,Long sectionId,Long periodsId,Long studentId) {
+		StudentAttendanceDTO studentAttendanceDTO = new StudentAttendanceDTO();
+		studentAttendanceDTO.setId(id);
+		studentAttendanceDTO.setAttendanceDate(attendanceDate);
+		studentAttendanceDTO.setComments(comments);
+		studentAttendanceDTO.setStatus(status);
+		studentAttendanceDTO.setStudentYearId(studentYearId);
+		studentAttendanceDTO.setPeriodsId(periodsId);
+		studentAttendanceDTO.setSectionId(sectionId);
+		studentAttendanceDTO.setDepartmentsId(departmentsId);
+		studentAttendanceDTO.setSemesterId(semesterId);
+		studentAttendanceDTO.setStudentId(studentId);
+		studentAttendanceDTO.setSubjectId(subjectId);
+		StudentAttendanceDTO val =studentAttendanceServiceImpl.save(studentAttendanceDTO);
+		return val;
+	}
+	
+	
+	public boolean deleteStudentAttendance(Long id) {
+		studentAttendanceServiceImpl.delete(id);
+        return true;
+    }
+	
+	public SemesterDTO newSemester(Long id,Sem sem) {
+		SemesterDTO semesterDTO = new SemesterDTO();
+		semesterDTO.setId(id);
+		semesterDTO.setSem(sem);
+		SemesterDTO val =semesterServiceImpl.save(semesterDTO);
+		return val;
+	}
+	
+	
+	public boolean deleteSemester(Long id) {
+		semesterServiceImpl.delete(id);
         return true;
     }
 	

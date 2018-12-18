@@ -13,6 +13,8 @@ import { CmsprojectGeneralInfoModule } from './general-info/general-info.module'
 import { CmsprojectLegalEntityModule } from './legal-entity/legal-entity.module';
 import { CmsprojectAuthorizedSignatoryModule } from './authorized-signatory/authorized-signatory.module';
 import { CmsprojectBankAccountsModule } from './bank-accounts/bank-accounts.module';
+import { CmsprojectSemesterModule } from './semester/semester.module';
+import { CmsprojectStudentAttendanceModule } from './student-attendance/student-attendance.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -31,6 +33,8 @@ import { CmsprojectBankAccountsModule } from './bank-accounts/bank-accounts.modu
         CmsprojectLegalEntityModule,
         CmsprojectAuthorizedSignatoryModule,
         CmsprojectBankAccountsModule,
+        CmsprojectSemesterModule,
+        CmsprojectStudentAttendanceModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],

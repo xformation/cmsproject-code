@@ -1,7 +1,7 @@
 package com.mycompany.myapp.service;
 
-import java.util.Collection;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,5 +64,6 @@ public interface StudentService {
     Page<StudentDTO> search(String query, Pageable pageable);
     
     Collection<Student> findAllByFilterOrder(StudentFilter filter, List<StudentOrder> orders) throws  DataAccessException;
+
     
 }

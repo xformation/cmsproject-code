@@ -19,6 +19,8 @@ import com.mycompany.myapp.service.dto.LegalEntityDTO;
 import com.mycompany.myapp.service.dto.LocationDTO;
 import com.mycompany.myapp.service.dto.PeriodsDTO;
 import com.mycompany.myapp.service.dto.SectionDTO;
+import com.mycompany.myapp.service.dto.SemesterDTO;
+import com.mycompany.myapp.service.dto.StudentAttendanceDTO;
 import com.mycompany.myapp.service.dto.StudentDTO;
 import com.mycompany.myapp.service.dto.StudentYearDTO;
 import com.mycompany.myapp.service.dto.SubjectDTO;
@@ -32,6 +34,8 @@ import com.mycompany.myapp.service.impl.LegalEntityServiceImpl;
 import com.mycompany.myapp.service.impl.LocationServiceImpl;
 import com.mycompany.myapp.service.impl.PeriodsServiceImpl;
 import com.mycompany.myapp.service.impl.SectionServiceImpl;
+import com.mycompany.myapp.service.impl.SemesterServiceImpl;
+import com.mycompany.myapp.service.impl.StudentAttendanceServiceImpl;
 import com.mycompany.myapp.service.impl.StudentServiceImpl;
 import com.mycompany.myapp.service.impl.StudentYearServiceImpl;
 import com.mycompany.myapp.service.impl.SubjectServiceImpl;
@@ -82,6 +86,14 @@ public class Query implements GraphQLQueryResolver{
 	 @Autowired
 	 private BankAccountsServiceImpl bankAccountsServiceImpl;
 	 
+	 @Autowired
+	 private StudentAttendanceServiceImpl studentAttendanceServiceImpl;
+	 
+	 @Autowired
+	 private SemesterServiceImpl semesterServiceImpl;
+	 
+	 
+	 
 //	public SubjectsDTO find(Long id) {
 //		Optional<SubjectsDTO> val = subjectsService.findOne(id);
 //		if(val.isPresent()) {
@@ -101,6 +113,23 @@ public class Query implements GraphQLQueryResolver{
             return val.get();
         }
         return new StudentYearDTO();
+    }
+	
+	public StudentAttendanceDTO findStudentAttendance(Long id) {
+        Optional<StudentAttendanceDTO> val = studentAttendanceServiceImpl.findOne(id);
+        if (val.isPresent()) {
+            return val.get();
+        }
+        return new StudentAttendanceDTO();
+    }
+	
+	
+	public SemesterDTO findSemester(Long id) {
+        Optional<SemesterDTO> val = semesterServiceImpl.findOne(id);
+        if (val.isPresent()) {
+            return val.get();
+        }
+        return new SemesterDTO();
     }
 	
 	public SectionDTO findSection(Long id) {
@@ -138,6 +167,7 @@ public class Query implements GraphQLQueryResolver{
 	 public List<Student> students(StudentFilter filter, List<StudentOrder> orders) {
 	        return Lists.newArrayList(studentServiceImpl.findAllByFilterOrder(filter, orders));
 	    }
+	
 	 
 	 public SubjectDTO findSubject(Long id) {
 	        Optional<SubjectDTO> val = subjectServiceImpl.findOne(id);

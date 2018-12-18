@@ -52,7 +52,7 @@ public class StudentYearServiceImpl implements StudentYearService {
         StudentYear studentYear = studentYearMapper.toEntity(studentYearDTO);
         studentYear = studentYearRepository.save(studentYear);
         StudentYearDTO result = studentYearMapper.toDto(studentYear);
-        studentYearSearchRepository.save(studentYear);
+        //studentYearSearchRepository.save(studentYear);
         return result;
     }
 

@@ -7,6 +7,17 @@ enum SYear {
   IV
 }
 
+enum Sem {
+    SEMI
+    SEMII
+}
+
+enum Status {
+    ACTIVE
+    DEACTIVE
+}
+
+
 enum ClassSection {
     A
     B
@@ -22,6 +33,12 @@ type StudentYearDTO {
   id: ID!
   sYear: String
 }
+
+type SemesterDTO {
+  id: ID!
+  sem: String
+}
+
 
 enum ClassPeriods {
     ONE 
@@ -56,6 +73,24 @@ enum Common {
     DBMS
 }
 
+input StudentFilter {
+  sName: String
+}
+
+enum OrderType {
+  ASC
+  DESC
+}
+
+enum OrderField {
+  id
+  sName
+}
+
+input StudentOrder {
+  field: OrderField
+  order: OrderType
+}
 
 type StudentDTO {
     id: ID!
@@ -132,8 +167,22 @@ type LegalEntityDTO {
   ptSignatory: String!
   ptNumber: Long!
   authorizedSignatoryId: Long!
-  
 }
+
+type StudentAttendanceDTO {
+  id: ID!
+  attendanceDate: LocalDate!
+  status: String!
+  comments: String!
+  studentYearId: Long!
+  departmentsId: Long!
+  subjectId: Long!
+  semesterId: Long!
+  sectionId: Long!
+  periodsId: Long!
+  studentId: Long!
+}
+
 type AuthorizedSignatoryDTO{
    signatoryName: String
    signatoryFatherName: String!
@@ -153,32 +202,12 @@ type BankAccountsDTO{
     corporateId: Long!
 }
 
-input StudentFilter {
-  sName: String
-}
-
-enum OrderType {
-  ASC
-  DESC
-}
-
-enum OrderField {
-  id
-  sName
-}
-
-input StudentOrder {
-  field: OrderField
-  order: OrderType
-}
-
 type Student {
     id: ID!
     sName: String!
     attendance: Boolean!
     electiveSub: String!
 }
-
 
 type Query {
   findStudentYear(id:ID!): StudentYearDTO
@@ -193,14 +222,16 @@ type Query {
   findGeneralInfo(id : ID!): GeneralInfoDTO
   findLegalEntity(id:ID!): LegalEntityDTO
   findAuthorizedSignatory(id:ID!): AuthorizedSignatoryDTO
-  students(filter: StudentFilter, orders: [StudentOrder!]): [Student!]!
   findBankAccounts(id:ID!): BankAccountsDTO
+  findStudentAttendance(id:ID!): StudentAttendanceDTO
+  findSemester(id:ID!): SemesterDTO
+  students(filter: StudentFilter, orders: [StudentOrder!]): [Student!]!
   now: LocalDate
 }
 
 
 type Mutation {
-  newStudentYear(id: ID! s_year: SYear): StudentYearDTO!
+  newStudentYear(id: ID!, s_year: SYear): StudentYearDTO!
   newSection(id: ID!, section: ClassSection!, studentyearId: Long!): SectionDTO!
   newPeriods(id: ID!, periods: ClassPeriods!, sectionId: Long!): PeriodsDTO!
   newTeacher(id: ID!, tName: String!, periodsId: Long!): TeacherDTO!
@@ -213,7 +244,11 @@ type Mutation {
   newLegalEntity(id:ID!, logo:Long, legalNameOfTheCollege: String!, typeOfCollege: TypeOfCollege!, dateOfIncorporation: LocalDate!, registeredOfficeAddress: String!, collegeIdentificationNumber: String!, pan: String!, tan: String!, tanCircleNumber: String!, citTdsLocation: String!, formSignatory: String!, pfNumber: String!, registrationDate: LocalDate!, esiNumber: Long!, ptRegistrationDate: LocalDate!, ptSignatory: String!, ptNumber: Long!, authorizedSignatoryId: Long! ): LegalEntityDTO
   newAuthorizedSignatory(id:ID!, signatoryName: String!, signatoryFatherName: String!, signatoryDesignation: String!, address: String!, email: String!, panCardNumber: String!): AuthorizedSignatoryDTO
   newBankAccounts(id:ID!, nameOfBank: NameOfBank!, accountNumber: Long!, typeOfAccount: String!, ifsCode: String!, branch: String!,corporateId: Long): BankAccountsDTO
+  newSemester(id: ID!, sem: Sem): SemesterDTO!
+  newStudentAttendance(id: ID!, attendanceDate : LocalDate!, status: Status, comments:  String!,studentYearId: Long, departmentsId: Long, subjectId: Long, semesterId: Long, sectionId: Long, periodsId: Long, studentId: Long): StudentAttendanceDTO
   deleteStudentYear(id: ID!): Boolean!
+  deleteStudentAttendance(id: ID!): Boolean!
+  deleteSemester(id: ID!): Boolean
   deleteSection(id: ID!): Boolean!
   deletePeriods(id: ID!): Boolean!
   deleteTeacher(id: ID!): Boolean!

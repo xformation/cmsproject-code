@@ -2,6 +2,7 @@ package com.mycompany.myapp.graphql.resolvers;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+
 import java.util.List;
 import java.util.Optional;
 

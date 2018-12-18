@@ -2,7 +2,9 @@ package com.mycompany.myapp.service.impl;
 
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
+
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
@@ -20,13 +22,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mycompany.myapp.domain.Student;
 import com.mycompany.myapp.graphql.resolvers.StudentFilter;
 import com.mycompany.myapp.graphql.resolvers.StudentOrder;
-import com.mycompany.myapp.repository.search.StudentSearchRepository;
 import com.mycompany.myapp.repository.StudentRepository;
+import com.mycompany.myapp.repository.search.StudentSearchRepository;
 import com.mycompany.myapp.service.StudentService;
 import com.mycompany.myapp.service.dto.StudentDTO;
 import com.mycompany.myapp.service.mapper.StudentMapper;
-
-import java.util.List;
 
 /**
  * Service Implementation for managing Student.
@@ -140,6 +140,4 @@ public class StudentServiceImpl implements StudentService {
 
         return query.getResultList();
     }
-
-    
 }

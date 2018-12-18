@@ -14,6 +14,24 @@ enum ClassSection{
 A,B
 }
 
+enum Sem{
+	SEMI,SEMII
+}
+
+entity Semester{
+	sem Sem required
+}
+
+enum Status{
+	ACTIVE,DEACTIVE
+}
+
+entity StudentAttendance{
+	attendanceDate LocalDate required
+	status Status required
+	comments String required
+}
+
 entity Periods{
 periods ClassPeriods required
 }
@@ -126,6 +144,13 @@ Student{teacher} to Teacher,
 Subject{student} to Student,
 Subject{teacher} to Teacher,
 LegalEntity{authorizedSignatory} to AuthorizedSignatory
+StudentAttendance{studentYear} to StudentYear
+StudentAttendance{departments} to Departments
+StudentAttendance{subject} to Subject
+StudentAttendance{semester} to Semester
+StudentAttendance{section} to Section
+StudentAttendance{periods} to Periods
+StudentAttendance{student} to Student
 }
 
 relationship OneToOne{
