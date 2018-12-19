@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
@@ -200,6 +202,10 @@ public class Query implements GraphQLQueryResolver{
 	        }
 	        return new LocationDTO();
 	    }
+	 
+	 public List<LocationDTO> findAllByLocation(){
+		 return Lists.newArrayList(locationServiceImpl.findAll());
+	 }
 	 
 	 public GeneralInfoDTO findGeneralInfo(Long id) {
 		 	Optional<GeneralInfoDTO> val = generalInfoServiceImpl.findOne(id);

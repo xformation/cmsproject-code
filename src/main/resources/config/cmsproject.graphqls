@@ -225,6 +225,7 @@ type Query {
   findBankAccounts(id:ID!): BankAccountsDTO
   findStudentAttendance(id:ID!): StudentAttendanceDTO
   findSemester(id:ID!): SemesterDTO
+  findAllByLocation: [LocationDTO!]!
   students(filter: StudentFilter, orders: [StudentOrder!]): [Student!]!
   now: LocalDate
 }
