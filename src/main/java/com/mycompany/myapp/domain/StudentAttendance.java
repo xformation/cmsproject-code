@@ -90,6 +90,7 @@ public class StudentAttendance implements Serializable {
 
     public StudentAttendance sName(String sName) {
         this.sName = sName;
+        return this;
     }
 
     public void setsName(String sName) {
