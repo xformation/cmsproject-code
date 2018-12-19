@@ -10,6 +10,17 @@
                         [(ngModel)]="studentAttendance.id" readonly />
                 </div>
                 <div class="form-group">
+                    <label class="form-control-label" for="field_sName">S Name</label>
+                    <input type="text" class="form-control" name="sName" id="field_sName"
+                        [(ngModel)]="studentAttendance.sName" required/>
+                    <div [hidden]="!(editForm.controls.sName?.dirty && editForm.controls.sName?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.sName?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="form-control-label" for="field_attendanceDate">Attendance Date</label>
                     <div class="input-group">
                         <input id="field_attendanceDate" type="text" class="form-control" name="attendanceDate" ngbDatepicker  #attendanceDateDp="ngbDatepicker" [(ngModel)]="studentAttendance.attendanceDate"

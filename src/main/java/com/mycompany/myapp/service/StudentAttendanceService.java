@@ -1,9 +1,15 @@
 package com.mycompany.myapp.service;
 
+import com.mycompany.myapp.domain.StudentAttendance;
+import com.mycompany.myapp.graphql.resolvers.StudentAttendanceFilter;
+import com.mycompany.myapp.graphql.resolvers.StudentAttendanceOrder;
+import com.mycompany.myapp.service.dto.StudentAttendanceDTO;
+
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import com.mycompany.myapp.service.dto.StudentAttendanceDTO;
+import org.springframework.dao.DataAccessException;
 
 /**
  * Service Interface for managing StudentAttendance.
@@ -50,5 +56,5 @@ public interface StudentAttendanceService {
      */
     List<StudentAttendanceDTO> search(String query);
     
- 
+    Collection<StudentAttendance> findAllByFilterOrder(StudentAttendanceFilter filter, List<StudentAttendanceOrder> orders) throws  DataAccessException;
 }

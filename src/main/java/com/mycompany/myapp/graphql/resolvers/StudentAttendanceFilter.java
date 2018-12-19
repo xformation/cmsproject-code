@@ -13,9 +13,11 @@ import java.util.Optional;
  * @author Xiangbin HAN (hanxb2001@163.com)
  *
  */
-public class StudentFilter {
+public class StudentAttendanceFilter {
 
     private String sName;
+    
+    
    
 
     @JsonProperty("sName")
@@ -29,7 +31,7 @@ public class StudentFilter {
    
     @Override
     public String toString() {
-        return "StudentFilter{} " + super.toString();
+        return "StudentAttendanceFilter{} " + super.toString();
     }
 
     /**
@@ -41,7 +43,7 @@ public class StudentFilter {
      */
     public void buildJpaQueryParameters(Query query) {
         
-        Optional<StudentFilter> nonNullFilter = Optional.ofNullable(this);
+        Optional<StudentAttendanceFilter> nonNullFilter = Optional.ofNullable(this);
         
         nonNullFilter.map(f -> f.getsName()).ifPresent(item -> query.setParameter("sName", item + "%"));
         
@@ -49,11 +51,11 @@ public class StudentFilter {
     }
 
     public String buildJpaQuery() {
-        Optional<StudentFilter> nonNullFilter = Optional.ofNullable(this);
+        Optional<StudentAttendanceFilter> nonNullFilter = Optional.ofNullable(this);
         StringBuilder sb = new StringBuilder(" WHERE");
         sb.append(
             nonNullFilter.map(f -> f.getsName())
-                .map(item -> " student.sName LIKE :sName and")
+                .map(item -> " student_attendance.sName LIKE :sName and")
                 .orElse("")
         );
         

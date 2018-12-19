@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import com.google.common.collect.Lists;
-import com.mycompany.myapp.domain.Student;
+import com.mycompany.myapp.domain.StudentAttendance;
 import com.mycompany.myapp.service.dto.AuthorizedSignatoryDTO;
 import com.mycompany.myapp.service.dto.BankAccountsDTO;
 import com.mycompany.myapp.service.dto.CollegeBranchesDTO;
@@ -164,8 +164,8 @@ public class Query implements GraphQLQueryResolver{
 	        return new StudentDTO();
 	    }
 	 
-	 public List<Student> students(StudentFilter filter, List<StudentOrder> orders) {
-	        return Lists.newArrayList(studentServiceImpl.findAllByFilterOrder(filter, orders));
+	 public List<StudentAttendance> students(StudentAttendanceFilter filter, List<StudentAttendanceOrder> orders) {
+	        return Lists.newArrayList(studentAttendanceServiceImpl.findAllByFilterOrder(filter, orders));
 	    }
 	
 	 

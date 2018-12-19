@@ -27,6 +27,7 @@ enum Status{
 }
 
 entity StudentAttendance{
+	sName String required 
 	attendanceDate LocalDate required
 	status Status required
 	comments String required

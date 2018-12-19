@@ -8,5 +8,6 @@ package com.mycompany.myapp.graphql.resolvers;
  */
 public enum OrderField {
     id,
-    sName
+    sName,
+    status
 }

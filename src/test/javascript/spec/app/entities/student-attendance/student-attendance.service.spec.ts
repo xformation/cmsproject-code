@@ -25,7 +25,7 @@ describe('Service Tests', () => {
             httpMock = injector.get(HttpTestingController);
             currentDate = moment();
 
-            elemDefault = new StudentAttendance(0, currentDate, Status.ACTIVE, 'AAAAAAA');
+            elemDefault = new StudentAttendance(0, 'AAAAAAA', currentDate, Status.ACTIVE, 'AAAAAAA');
         });
 
         describe('Service methods', async () => {
@@ -70,6 +70,7 @@ describe('Service Tests', () => {
             it('should update a StudentAttendance', async () => {
                 const returnedFromService = Object.assign(
                     {
+                        sName: 'BBBBBB',
                         attendanceDate: currentDate.format(DATE_FORMAT),
                         status: 'BBBBBB',
                         comments: 'BBBBBB'
@@ -94,6 +95,7 @@ describe('Service Tests', () => {
             it('should return a list of StudentAttendance', async () => {
                 const returnedFromService = Object.assign(
                     {
+                        sName: 'BBBBBB',
                         attendanceDate: currentDate.format(DATE_FORMAT),
                         status: 'BBBBBB',
                         comments: 'BBBBBB'

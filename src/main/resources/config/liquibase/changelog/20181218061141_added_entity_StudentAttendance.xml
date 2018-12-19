@@ -21,6 +21,10 @@
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="s_name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
             <column name="attendance_date" type="date">
                 <constraints nullable="false" />
             </column>

@@ -31,6 +31,10 @@ public class StudentAttendance implements Serializable {
     private Long id;
 
     @NotNull
+    @Column(name = "s_name", nullable = false)
+    private String sName;
+
+    @NotNull
     @Column(name = "attendance_date", nullable = false)
     private LocalDate attendanceDate;
 
@@ -78,6 +82,18 @@ public class StudentAttendance implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getsName() {
+        return sName;
+    }
+
+    public StudentAttendance sName(String sName) {
+        this.sName = sName;
+    }
+
+    public void setsName(String sName) {
+        this.sName = sName;
     }
 
     public LocalDate getAttendanceDate() {
@@ -235,6 +251,7 @@ public class StudentAttendance implements Serializable {
     public String toString() {
         return "StudentAttendance{" +
             "id=" + getId() +
+            ", sName='" + getsName() + "'" +
             ", attendanceDate='" + getAttendanceDate() + "'" +
             ", status='" + getStatus() + "'" +
             ", comments='" + getComments() + "'" +

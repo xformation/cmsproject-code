@@ -2,15 +2,20 @@ package com.mycompany.myapp.service.impl;
 
 import com.mycompany.myapp.service.StudentAttendanceService;
 import com.mycompany.myapp.domain.StudentAttendance;
+import com.mycompany.myapp.graphql.resolvers.StudentAttendanceFilter;
+import com.mycompany.myapp.graphql.resolvers.StudentAttendanceOrder;
 import com.mycompany.myapp.repository.StudentAttendanceRepository;
 import com.mycompany.myapp.repository.search.StudentAttendanceSearchRepository;
 import com.mycompany.myapp.service.dto.StudentAttendanceDTO;
+import com.mycompany.myapp.service.dto.StudentDTO;
 import com.mycompany.myapp.service.mapper.StudentAttendanceMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +24,7 @@ import java.util.stream.StreamSupport;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -28,10 +34,10 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 @Service
 @Transactional
 public class StudentAttendanceServiceImpl implements StudentAttendanceService {
-
+	
 	@PersistenceContext
     private EntityManager em;
-	
+
     private final Logger log = LoggerFactory.getLogger(StudentAttendanceServiceImpl.class);
 
     private final StudentAttendanceRepository studentAttendanceRepository;
@@ -59,7 +65,7 @@ public class StudentAttendanceServiceImpl implements StudentAttendanceService {
         StudentAttendance studentAttendance = studentAttendanceMapper.toEntity(studentAttendanceDTO);
         studentAttendance = studentAttendanceRepository.save(studentAttendance);
         StudentAttendanceDTO result = studentAttendanceMapper.toDto(studentAttendance);
-        //studentAttendanceSearchRepository.save(studentAttendance);
+        studentAttendanceSearchRepository.save(studentAttendance);
         return result;
     }
 
@@ -120,5 +126,21 @@ public class StudentAttendanceServiceImpl implements StudentAttendanceService {
             .collect(Collectors.toList());
     }
     
+    @SuppressWarnings("unchecked")
+    @Override
+    public Collection<StudentAttendance> findAllByFilterOrder(StudentAttendanceFilter filter, List<StudentAttendanceOrder> orders) throws DataAccessException{
    
+    	StringBuilder sb = new StringBuilder("SELECT student_attendance FROM StudentAttendance student_attendance");
+
+        Optional<StudentAttendanceFilter> nonNullFilter = Optional.ofNullable(filter);
+        nonNullFilter.ifPresent(f -> sb.append(f.buildJpaQuery()));
+
+        sb.append(StudentAttendanceOrder.buildOrderJpaQuery(orders));
+
+        Query query = this.em.createQuery(sb.toString());
+        nonNullFilter.ifPresent(f -> f.buildJpaQueryParameters(query));
+
+        return query.getResultList();
+    }
+
 }

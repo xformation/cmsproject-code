@@ -14,6 +14,9 @@ public class StudentAttendanceDTO implements Serializable {
     private Long id;
 
     @NotNull
+    private String sName;
+
+    @NotNull
     private LocalDate attendanceDate;
 
     @NotNull
@@ -42,6 +45,14 @@ public class StudentAttendanceDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getsName() {
+        return sName;
+    }
+
+    public void setsName(String sName) {
+        this.sName = sName;
     }
 
     public LocalDate getAttendanceDate() {
@@ -149,6 +160,7 @@ public class StudentAttendanceDTO implements Serializable {
     public String toString() {
         return "StudentAttendanceDTO{" +
             "id=" + getId() +
+            ", sName='" + getsName() + "'" +
             ", attendanceDate='" + getAttendanceDate() + "'" +
             ", status='" + getStatus() + "'" +
             ", comments='" + getComments() + "'" +

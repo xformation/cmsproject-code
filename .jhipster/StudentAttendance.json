@@ -2,6 +2,13 @@
     "name": "StudentAttendance",
     "fields": [
         {
+            "fieldName": "sName",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
             "fieldName": "attendanceDate",
             "fieldType": "LocalDate",
             "fieldValidateRules": [
