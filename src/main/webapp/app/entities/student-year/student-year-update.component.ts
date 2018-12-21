@@ -11,7 +11,7 @@ import { StudentYearService } from './student-year.service';
     templateUrl: './student-year-update.component.html'
 })
 export class StudentYearUpdateComponent implements OnInit {
-    private _studentYear: IStudentYear;
+    studentYear: IStudentYear;
     isSaving: boolean;
 
     constructor(private studentYearService: StudentYearService, private activatedRoute: ActivatedRoute) {}
@@ -47,12 +47,5 @@ export class StudentYearUpdateComponent implements OnInit {
 
     private onSaveError() {
         this.isSaving = false;
-    }
-    get studentYear() {
-        return this._studentYear;
-    }
-
-    set studentYear(studentYear: IStudentYear) {
-        this._studentYear = studentYear;
     }
 }

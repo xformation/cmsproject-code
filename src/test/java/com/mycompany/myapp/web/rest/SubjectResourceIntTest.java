@@ -16,8 +16,6 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -59,10 +57,8 @@ public class SubjectResourceIntTest {
     @Autowired
     private SubjectRepository subjectRepository;
 
-
     @Autowired
     private SubjectMapper subjectMapper;
-    
 
     @Autowired
     private SubjectService subjectService;
@@ -219,7 +215,6 @@ public class SubjectResourceIntTest {
             .andExpect(jsonPath("$.[*].electiveSub").value(hasItem(DEFAULT_ELECTIVE_SUB.toString())));
     }
     
-
     @Test
     @Transactional
     public void getSubject() throws Exception {
@@ -234,6 +229,7 @@ public class SubjectResourceIntTest {
             .andExpect(jsonPath("$.commonSub").value(DEFAULT_COMMON_SUB.toString()))
             .andExpect(jsonPath("$.electiveSub").value(DEFAULT_ELECTIVE_SUB.toString()));
     }
+
     @Test
     @Transactional
     public void getNonExistingSubject() throws Exception {
@@ -283,7 +279,7 @@ public class SubjectResourceIntTest {
         // Create the Subject
         SubjectDTO subjectDTO = subjectMapper.toDto(subject);
 
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException 
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restSubjectMockMvc.perform(put("/api/subjects")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(subjectDTO)))
@@ -323,8 +319,8 @@ public class SubjectResourceIntTest {
     public void searchSubject() throws Exception {
         // Initialize the database
         subjectRepository.saveAndFlush(subject);
-        when(mockSubjectSearchRepository.search(queryStringQuery("id:" + subject.getId()), PageRequest.of(0, 20)))
-            .thenReturn(new PageImpl<>(Collections.singletonList(subject), PageRequest.of(0, 1), 1));
+        when(mockSubjectSearchRepository.search(queryStringQuery("id:" + subject.getId())))
+            .thenReturn(Collections.singletonList(subject));
         // Search the subject
         restSubjectMockMvc.perform(get("/api/_search/subjects?query=id:" + subject.getId()))
             .andExpect(status().isOk())

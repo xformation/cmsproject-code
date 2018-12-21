@@ -159,6 +159,6 @@ Teacher{periods} to Periods{teacher}
 }
 dto * with mapstruct
 service all with serviceImpl
-paginate StudentYear,Section,Periods,Teacher,Student,Subject with pagination
+
 
 

@@ -2,9 +2,6 @@ package com.mycompany.myapp.service;
 
 import com.mycompany.myapp.service.dto.PeriodsDTO;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -24,10 +21,9 @@ public interface PeriodsService {
     /**
      * Get all the periods.
      *
-     * @param pageable the pagination information
      * @return the list of entities
      */
-    Page<PeriodsDTO> findAll(Pageable pageable);
+    List<PeriodsDTO> findAll();
     /**
      * Get all the PeriodsDTO where Teacher is null.
      *
@@ -56,8 +52,7 @@ public interface PeriodsService {
      *
      * @param query the query of the search
      * 
-     * @param pageable the pagination information
      * @return the list of entities
      */
-    Page<PeriodsDTO> search(String query, Pageable pageable);
+    List<PeriodsDTO> search(String query);
 }

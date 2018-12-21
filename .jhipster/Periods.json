@@ -28,7 +28,7 @@
     "changelogDate": "20181202105141",
     "entityTableName": "periods",
     "dto": "mapstruct",
-    "pagination": "pagination",
+    "pagination": "no",
     "service": "serviceImpl",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,

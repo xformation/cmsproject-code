@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
-import { JhiPaginationUtil, JhiResolvePagingParams } from 'ng-jhipster';
 import { UserRouteAccessService } from 'app/core';
-import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import { Teacher } from 'app/shared/model/teacher.model';
 import { TeacherService } from './teacher.service';
 import { TeacherComponent } from './teacher.component';
@@ -17,10 +16,13 @@ import { ITeacher } from 'app/shared/model/teacher.model';
 export class TeacherResolve implements Resolve<ITeacher> {
     constructor(private service: TeacherService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Teacher> {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
-            return this.service.find(id).pipe(map((teacher: HttpResponse<Teacher>) => teacher.body));
+            return this.service.find(id).pipe(
+                filter((response: HttpResponse<Teacher>) => response.ok),
+                map((teacher: HttpResponse<Teacher>) => teacher.body)
+            );
         }
         return of(new Teacher());
     }
@@ -30,12 +32,8 @@ export const teacherRoute: Routes = [
     {
         path: 'teacher',
         component: TeacherComponent,
-        resolve: {
-            pagingParams: JhiResolvePagingParams
-        },
         data: {
             authorities: ['ROLE_USER'],
-            defaultSort: 'id,asc',
             pageTitle: 'Teachers'
         },
         canActivate: [UserRouteAccessService]

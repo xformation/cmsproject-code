@@ -16,8 +16,6 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -54,10 +52,8 @@ public class TeacherResourceIntTest {
     @Autowired
     private TeacherRepository teacherRepository;
 
-
     @Autowired
     private TeacherMapper teacherMapper;
-    
 
     @Autowired
     private TeacherService teacherService;
@@ -192,7 +188,6 @@ public class TeacherResourceIntTest {
             .andExpect(jsonPath("$.[*].tName").value(hasItem(DEFAULT_T_NAME.toString())));
     }
     
-
     @Test
     @Transactional
     public void getTeacher() throws Exception {
@@ -206,6 +201,7 @@ public class TeacherResourceIntTest {
             .andExpect(jsonPath("$.id").value(teacher.getId().intValue()))
             .andExpect(jsonPath("$.tName").value(DEFAULT_T_NAME.toString()));
     }
+
     @Test
     @Transactional
     public void getNonExistingTeacher() throws Exception {
@@ -253,7 +249,7 @@ public class TeacherResourceIntTest {
         // Create the Teacher
         TeacherDTO teacherDTO = teacherMapper.toDto(teacher);
 
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException 
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restTeacherMockMvc.perform(put("/api/teachers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(teacherDTO)))
@@ -293,14 +289,14 @@ public class TeacherResourceIntTest {
     public void searchTeacher() throws Exception {
         // Initialize the database
         teacherRepository.saveAndFlush(teacher);
-        when(mockTeacherSearchRepository.search(queryStringQuery("id:" + teacher.getId()), PageRequest.of(0, 20)))
-            .thenReturn(new PageImpl<>(Collections.singletonList(teacher), PageRequest.of(0, 1), 1));
+        when(mockTeacherSearchRepository.search(queryStringQuery("id:" + teacher.getId())))
+            .thenReturn(Collections.singletonList(teacher));
         // Search the teacher
         restTeacherMockMvc.perform(get("/api/_search/teachers?query=id:" + teacher.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(teacher.getId().intValue())))
-            .andExpect(jsonPath("$.[*].tName").value(hasItem(DEFAULT_T_NAME.toString())));
+            .andExpect(jsonPath("$.[*].tName").value(hasItem(DEFAULT_T_NAME)));
     }
 
     @Test

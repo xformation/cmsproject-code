@@ -11,8 +11,8 @@ type EntityArrayResponseType = HttpResponse<IPeriods[]>;
 
 @Injectable({ providedIn: 'root' })
 export class PeriodsService {
-    private resourceUrl = SERVER_API_URL + 'api/periods';
-    private resourceSearchUrl = SERVER_API_URL + 'api/_search/periods';
+    public resourceUrl = SERVER_API_URL + 'api/periods';
+    public resourceSearchUrl = SERVER_API_URL + 'api/_search/periods';
 
     constructor(private http: HttpClient) {}
 

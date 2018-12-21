@@ -16,7 +16,7 @@ import { TeacherService } from 'app/entities/teacher';
     templateUrl: './periods-update.component.html'
 })
 export class PeriodsUpdateComponent implements OnInit {
-    private _periods: IPeriods;
+    periods: IPeriods;
     isSaving: boolean;
 
     sections: ISection[];
@@ -86,12 +86,5 @@ export class PeriodsUpdateComponent implements OnInit {
 
     trackTeacherById(index: number, item: ITeacher) {
         return item.id;
-    }
-    get periods() {
-        return this._periods;
-    }
-
-    set periods(periods: IPeriods) {
-        this._periods = periods;
     }
 }

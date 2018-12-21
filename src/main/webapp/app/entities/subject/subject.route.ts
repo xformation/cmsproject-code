@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
-import { JhiPaginationUtil, JhiResolvePagingParams } from 'ng-jhipster';
 import { UserRouteAccessService } from 'app/core';
-import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import { Subject } from 'app/shared/model/subject.model';
 import { SubjectService } from './subject.service';
 import { SubjectComponent } from './subject.component';
@@ -17,10 +16,13 @@ import { ISubject } from 'app/shared/model/subject.model';
 export class SubjectResolve implements Resolve<ISubject> {
     constructor(private service: SubjectService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Subject> {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
-            return this.service.find(id).pipe(map((subject: HttpResponse<Subject>) => subject.body));
+            return this.service.find(id).pipe(
+                filter((response: HttpResponse<Subject>) => response.ok),
+                map((subject: HttpResponse<Subject>) => subject.body)
+            );
         }
         return of(new Subject());
     }
@@ -30,12 +32,8 @@ export const subjectRoute: Routes = [
     {
         path: 'subject',
         component: SubjectComponent,
-        resolve: {
-            pagingParams: JhiResolvePagingParams
-        },
         data: {
             authorities: ['ROLE_USER'],
-            defaultSort: 'id,asc',
             pageTitle: 'Subjects'
         },
         canActivate: [UserRouteAccessService]

@@ -2,9 +2,7 @@ package com.mycompany.myapp.service;
 
 import com.mycompany.myapp.service.dto.SectionDTO;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -23,10 +21,9 @@ public interface SectionService {
     /**
      * Get all the sections.
      *
-     * @param pageable the pagination information
      * @return the list of entities
      */
-    Page<SectionDTO> findAll(Pageable pageable);
+    List<SectionDTO> findAll();
 
 
     /**
@@ -49,8 +46,7 @@ public interface SectionService {
      *
      * @param query the query of the search
      * 
-     * @param pageable the pagination information
      * @return the list of entities
      */
-    Page<SectionDTO> search(String query, Pageable pageable);
+    List<SectionDTO> search(String query);
 }

@@ -14,7 +14,7 @@ import { TeacherService } from 'app/entities/teacher';
     templateUrl: './student-update.component.html'
 })
 export class StudentUpdateComponent implements OnInit {
-    private _student: IStudent;
+    student: IStudent;
     isSaving: boolean;
 
     teachers: ITeacher[];
@@ -71,12 +71,5 @@ export class StudentUpdateComponent implements OnInit {
 
     trackTeacherById(index: number, item: ITeacher) {
         return item.id;
-    }
-    get student() {
-        return this._student;
-    }
-
-    set student(student: IStudent) {
-        this._student = student;
     }
 }

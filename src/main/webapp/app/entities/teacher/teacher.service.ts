@@ -11,8 +11,8 @@ type EntityArrayResponseType = HttpResponse<ITeacher[]>;
 
 @Injectable({ providedIn: 'root' })
 export class TeacherService {
-    private resourceUrl = SERVER_API_URL + 'api/teachers';
-    private resourceSearchUrl = SERVER_API_URL + 'api/_search/teachers';
+    public resourceUrl = SERVER_API_URL + 'api/teachers';
+    public resourceSearchUrl = SERVER_API_URL + 'api/_search/teachers';
 
     constructor(private http: HttpClient) {}
 

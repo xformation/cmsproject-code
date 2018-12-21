@@ -16,8 +16,6 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -55,10 +53,8 @@ public class StudentYearResourceIntTest {
     @Autowired
     private StudentYearRepository studentYearRepository;
 
-
     @Autowired
     private StudentYearMapper studentYearMapper;
-    
 
     @Autowired
     private StudentYearService studentYearService;
@@ -193,7 +189,6 @@ public class StudentYearResourceIntTest {
             .andExpect(jsonPath("$.[*].sYear").value(hasItem(DEFAULT_S_YEAR.toString())));
     }
     
-
     @Test
     @Transactional
     public void getStudentYear() throws Exception {
@@ -207,6 +202,7 @@ public class StudentYearResourceIntTest {
             .andExpect(jsonPath("$.id").value(studentYear.getId().intValue()))
             .andExpect(jsonPath("$.sYear").value(DEFAULT_S_YEAR.toString()));
     }
+
     @Test
     @Transactional
     public void getNonExistingStudentYear() throws Exception {
@@ -254,7 +250,7 @@ public class StudentYearResourceIntTest {
         // Create the StudentYear
         StudentYearDTO studentYearDTO = studentYearMapper.toDto(studentYear);
 
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException 
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restStudentYearMockMvc.perform(put("/api/student-years")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(studentYearDTO)))
@@ -294,8 +290,8 @@ public class StudentYearResourceIntTest {
     public void searchStudentYear() throws Exception {
         // Initialize the database
         studentYearRepository.saveAndFlush(studentYear);
-        when(mockStudentYearSearchRepository.search(queryStringQuery("id:" + studentYear.getId()), PageRequest.of(0, 20)))
-            .thenReturn(new PageImpl<>(Collections.singletonList(studentYear), PageRequest.of(0, 1), 1));
+        when(mockStudentYearSearchRepository.search(queryStringQuery("id:" + studentYear.getId())))
+            .thenReturn(Collections.singletonList(studentYear));
         // Search the studentYear
         restStudentYearMockMvc.perform(get("/api/_search/student-years?query=id:" + studentYear.getId()))
             .andExpect(status().isOk())

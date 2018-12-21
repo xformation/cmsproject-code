@@ -16,8 +16,6 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -61,10 +59,8 @@ public class StudentResourceIntTest {
     @Autowired
     private StudentRepository studentRepository;
 
-
     @Autowired
     private StudentMapper studentMapper;
-    
 
     @Autowired
     private StudentService studentService;
@@ -243,7 +239,6 @@ public class StudentResourceIntTest {
             .andExpect(jsonPath("$.[*].electiveSub").value(hasItem(DEFAULT_ELECTIVE_SUB.toString())));
     }
     
-
     @Test
     @Transactional
     public void getStudent() throws Exception {
@@ -259,6 +254,7 @@ public class StudentResourceIntTest {
             .andExpect(jsonPath("$.attendance").value(DEFAULT_ATTENDANCE.booleanValue()))
             .andExpect(jsonPath("$.electiveSub").value(DEFAULT_ELECTIVE_SUB.toString()));
     }
+
     @Test
     @Transactional
     public void getNonExistingStudent() throws Exception {
@@ -310,7 +306,7 @@ public class StudentResourceIntTest {
         // Create the Student
         StudentDTO studentDTO = studentMapper.toDto(student);
 
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException 
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restStudentMockMvc.perform(put("/api/students")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(studentDTO)))
@@ -350,14 +346,14 @@ public class StudentResourceIntTest {
     public void searchStudent() throws Exception {
         // Initialize the database
         studentRepository.saveAndFlush(student);
-        when(mockStudentSearchRepository.search(queryStringQuery("id:" + student.getId()), PageRequest.of(0, 20)))
-            .thenReturn(new PageImpl<>(Collections.singletonList(student), PageRequest.of(0, 1), 1));
+        when(mockStudentSearchRepository.search(queryStringQuery("id:" + student.getId())))
+            .thenReturn(Collections.singletonList(student));
         // Search the student
         restStudentMockMvc.perform(get("/api/_search/students?query=id:" + student.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(student.getId().intValue())))
-            .andExpect(jsonPath("$.[*].sName").value(hasItem(DEFAULT_S_NAME.toString())))
+            .andExpect(jsonPath("$.[*].sName").value(hasItem(DEFAULT_S_NAME)))
             .andExpect(jsonPath("$.[*].attendance").value(hasItem(DEFAULT_ATTENDANCE.booleanValue())))
             .andExpect(jsonPath("$.[*].electiveSub").value(hasItem(DEFAULT_ELECTIVE_SUB.toString())));
     }

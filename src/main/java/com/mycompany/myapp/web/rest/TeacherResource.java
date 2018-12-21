@@ -4,15 +4,10 @@ import com.codahale.metrics.annotation.Timed;
 import com.mycompany.myapp.service.TeacherService;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import com.mycompany.myapp.web.rest.util.HeaderUtil;
-import com.mycompany.myapp.web.rest.util.PaginationUtil;
 import com.mycompany.myapp.service.dto.TeacherDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -88,16 +83,13 @@ public class TeacherResource {
     /**
      * GET  /teachers : get all the teachers.
      *
-     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of teachers in body
      */
     @GetMapping("/teachers")
     @Timed
-    public ResponseEntity<List<TeacherDTO>> getAllTeachers(Pageable pageable) {
-        log.debug("REST request to get a page of Teachers");
-        Page<TeacherDTO> page = teacherService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/teachers");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    public List<TeacherDTO> getAllTeachers() {
+        log.debug("REST request to get all Teachers");
+        return teacherService.findAll();
     }
 
     /**
@@ -133,16 +125,13 @@ public class TeacherResource {
      * to the query.
      *
      * @param query the query of the teacher search
-     * @param pageable the pagination information
      * @return the result of the search
      */
     @GetMapping("/_search/teachers")
     @Timed
-    public ResponseEntity<List<TeacherDTO>> searchTeachers(@RequestParam String query, Pageable pageable) {
-        log.debug("REST request to search for a page of Teachers for query {}", query);
-        Page<TeacherDTO> page = teacherService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/teachers");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    public List<TeacherDTO> searchTeachers(@RequestParam String query) {
+        log.debug("REST request to search Teachers for query {}", query);
+        return teacherService.search(query);
     }
 
 }

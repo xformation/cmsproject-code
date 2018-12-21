@@ -9,13 +9,14 @@ import com.mycompany.myapp.service.mapper.TeacherMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -49,25 +50,26 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public TeacherDTO save(TeacherDTO teacherDTO) {
         log.debug("Request to save Teacher : {}", teacherDTO);
+
         Teacher teacher = teacherMapper.toEntity(teacherDTO);
         teacher = teacherRepository.save(teacher);
         TeacherDTO result = teacherMapper.toDto(teacher);
-        //teacherSearchRepository.save(teacher);
+        teacherSearchRepository.save(teacher);
         return result;
     }
 
     /**
      * Get all the teachers.
      *
-     * @param pageable the pagination information
      * @return the list of entities
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<TeacherDTO> findAll(Pageable pageable) {
+    public List<TeacherDTO> findAll() {
         log.debug("Request to get all Teachers");
-        return teacherRepository.findAll(pageable)
-            .map(teacherMapper::toDto);
+        return teacherRepository.findAll().stream()
+            .map(teacherMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 
 
@@ -101,14 +103,15 @@ public class TeacherServiceImpl implements TeacherService {
      * Search for the teacher corresponding to the query.
      *
      * @param query the query of the search
-     * @param pageable the pagination information
      * @return the list of entities
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<TeacherDTO> search(String query, Pageable pageable) {
-        log.debug("Request to search for a page of Teachers for query {}", query);
-        return teacherSearchRepository.search(queryStringQuery(query), pageable)
-            .map(teacherMapper::toDto);
+    public List<TeacherDTO> search(String query) {
+        log.debug("Request to search Teachers for query {}", query);
+        return StreamSupport
+            .stream(teacherSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .map(teacherMapper::toDto)
+            .collect(Collectors.toList());
     }
 }

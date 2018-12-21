@@ -18,7 +18,7 @@ import { TeacherService } from 'app/entities/teacher';
     templateUrl: './subject-update.component.html'
 })
 export class SubjectUpdateComponent implements OnInit {
-    private _subject: ISubject;
+    subject: ISubject;
     isSaving: boolean;
 
     periods: IPeriods[];
@@ -101,12 +101,5 @@ export class SubjectUpdateComponent implements OnInit {
 
     trackTeacherById(index: number, item: ITeacher) {
         return item.id;
-    }
-    get subject() {
-        return this._subject;
-    }
-
-    set subject(subject: ISubject) {
-        this._subject = subject;
     }
 }

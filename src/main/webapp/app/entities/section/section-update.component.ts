@@ -14,7 +14,7 @@ import { StudentYearService } from 'app/entities/student-year';
     templateUrl: './section-update.component.html'
 })
 export class SectionUpdateComponent implements OnInit {
-    private _section: ISection;
+    section: ISection;
     isSaving: boolean;
 
     studentyears: IStudentYear[];
@@ -71,12 +71,5 @@ export class SectionUpdateComponent implements OnInit {
 
     trackStudentYearById(index: number, item: IStudentYear) {
         return item.id;
-    }
-    get section() {
-        return this._section;
-    }
-
-    set section(section: ISection) {
-        this._section = section;
     }
 }

@@ -16,8 +16,6 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -55,10 +53,8 @@ public class SectionResourceIntTest {
     @Autowired
     private SectionRepository sectionRepository;
 
-
     @Autowired
     private SectionMapper sectionMapper;
-    
 
     @Autowired
     private SectionService sectionService;
@@ -193,7 +189,6 @@ public class SectionResourceIntTest {
             .andExpect(jsonPath("$.[*].section").value(hasItem(DEFAULT_SECTION.toString())));
     }
     
-
     @Test
     @Transactional
     public void getSection() throws Exception {
@@ -207,6 +202,7 @@ public class SectionResourceIntTest {
             .andExpect(jsonPath("$.id").value(section.getId().intValue()))
             .andExpect(jsonPath("$.section").value(DEFAULT_SECTION.toString()));
     }
+
     @Test
     @Transactional
     public void getNonExistingSection() throws Exception {
@@ -254,7 +250,7 @@ public class SectionResourceIntTest {
         // Create the Section
         SectionDTO sectionDTO = sectionMapper.toDto(section);
 
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException 
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restSectionMockMvc.perform(put("/api/sections")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(sectionDTO)))
@@ -294,8 +290,8 @@ public class SectionResourceIntTest {
     public void searchSection() throws Exception {
         // Initialize the database
         sectionRepository.saveAndFlush(section);
-        when(mockSectionSearchRepository.search(queryStringQuery("id:" + section.getId()), PageRequest.of(0, 20)))
-            .thenReturn(new PageImpl<>(Collections.singletonList(section), PageRequest.of(0, 1), 1));
+        when(mockSectionSearchRepository.search(queryStringQuery("id:" + section.getId())))
+            .thenReturn(Collections.singletonList(section));
         // Search the section
         restSectionMockMvc.perform(get("/api/_search/sections?query=id:" + section.getId()))
             .andExpect(status().isOk())

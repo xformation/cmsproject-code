@@ -2,9 +2,7 @@ package com.mycompany.myapp.service;
 
 import com.mycompany.myapp.service.dto.TeacherDTO;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -23,10 +21,9 @@ public interface TeacherService {
     /**
      * Get all the teachers.
      *
-     * @param pageable the pagination information
      * @return the list of entities
      */
-    Page<TeacherDTO> findAll(Pageable pageable);
+    List<TeacherDTO> findAll();
 
 
     /**
@@ -49,8 +46,7 @@ public interface TeacherService {
      *
      * @param query the query of the search
      * 
-     * @param pageable the pagination information
      * @return the list of entities
      */
-    Page<TeacherDTO> search(String query, Pageable pageable);
+    List<TeacherDTO> search(String query);
 }

@@ -1,13 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { IPeriods } from 'app/shared/model/periods.model';
 import { Principal } from 'app/core';
-
-import { ITEMS_PER_PAGE } from 'app/shared';
 import { PeriodsService } from './periods.service';
 
 @Component({
@@ -15,38 +13,18 @@ import { PeriodsService } from './periods.service';
     templateUrl: './periods.component.html'
 })
 export class PeriodsComponent implements OnInit, OnDestroy {
-    currentAccount: any;
     periods: IPeriods[];
-    error: any;
-    success: any;
+    currentAccount: any;
     eventSubscriber: Subscription;
     currentSearch: string;
-    routeData: any;
-    links: any;
-    totalItems: any;
-    queryCount: any;
-    itemsPerPage: any;
-    page: any;
-    predicate: any;
-    previousPage: any;
-    reverse: any;
 
     constructor(
         private periodsService: PeriodsService,
-        private parseLinks: JhiParseLinks,
         private jhiAlertService: JhiAlertService,
-        private principal: Principal,
+        private eventManager: JhiEventManager,
         private activatedRoute: ActivatedRoute,
-        private router: Router,
-        private eventManager: JhiEventManager
+        private principal: Principal
     ) {
-        this.itemsPerPage = ITEMS_PER_PAGE;
-        this.routeData = this.activatedRoute.data.subscribe(data => {
-            this.page = data.pagingParams.page;
-            this.previousPage = data.pagingParams.page;
-            this.reverse = data.pagingParams.ascending;
-            this.predicate = data.pagingParams.predicate;
-        });
         this.currentSearch =
             this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search']
                 ? this.activatedRoute.snapshot.params['search']
@@ -57,75 +35,33 @@ export class PeriodsComponent implements OnInit, OnDestroy {
         if (this.currentSearch) {
             this.periodsService
                 .search({
-                    page: this.page - 1,
-                    query: this.currentSearch,
-                    size: this.itemsPerPage,
-                    sort: this.sort()
+                    query: this.currentSearch
                 })
                 .subscribe(
-                    (res: HttpResponse<IPeriods[]>) => this.paginatePeriods(res.body, res.headers),
+                    (res: HttpResponse<IPeriods[]>) => (this.periods = res.body),
                     (res: HttpErrorResponse) => this.onError(res.message)
                 );
             return;
         }
-        this.periodsService
-            .query({
-                page: this.page - 1,
-                size: this.itemsPerPage,
-                sort: this.sort()
-            })
-            .subscribe(
-                (res: HttpResponse<IPeriods[]>) => this.paginatePeriods(res.body, res.headers),
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
-    }
-
-    loadPage(page: number) {
-        if (page !== this.previousPage) {
-            this.previousPage = page;
-            this.transition();
-        }
-    }
-
-    transition() {
-        this.router.navigate(['/periods'], {
-            queryParams: {
-                page: this.page,
-                size: this.itemsPerPage,
-                search: this.currentSearch,
-                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-            }
-        });
-        this.loadAll();
-    }
-
-    clear() {
-        this.page = 0;
-        this.currentSearch = '';
-        this.router.navigate([
-            '/periods',
-            {
-                page: this.page,
-                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-            }
-        ]);
-        this.loadAll();
+        this.periodsService.query().subscribe(
+            (res: HttpResponse<IPeriods[]>) => {
+                this.periods = res.body;
+                this.currentSearch = '';
+            },
+            (res: HttpErrorResponse) => this.onError(res.message)
+        );
     }
 
     search(query) {
         if (!query) {
             return this.clear();
         }
-        this.page = 0;
         this.currentSearch = query;
-        this.router.navigate([
-            '/periods',
-            {
-                search: this.currentSearch,
-                page: this.page,
-                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-            }
-        ]);
+        this.loadAll();
+    }
+
+    clear() {
+        this.currentSearch = '';
         this.loadAll();
     }
 
@@ -147,21 +83,6 @@ export class PeriodsComponent implements OnInit, OnDestroy {
 
     registerChangeInPeriods() {
         this.eventSubscriber = this.eventManager.subscribe('periodsListModification', response => this.loadAll());
-    }
-
-    sort() {
-        const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
-        if (this.predicate !== 'id') {
-            result.push('id');
-        }
-        return result;
-    }
-
-    private paginatePeriods(data: IPeriods[], headers: HttpHeaders) {
-        this.links = this.parseLinks.parse(headers.get('link'));
-        this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
-        this.queryCount = this.totalItems;
-        this.periods = data;
     }
 
     private onError(errorMessage: string) {

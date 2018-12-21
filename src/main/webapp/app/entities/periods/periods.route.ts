@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
-import { JhiPaginationUtil, JhiResolvePagingParams } from 'ng-jhipster';
 import { UserRouteAccessService } from 'app/core';
-import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import { Periods } from 'app/shared/model/periods.model';
 import { PeriodsService } from './periods.service';
 import { PeriodsComponent } from './periods.component';
@@ -17,10 +16,13 @@ import { IPeriods } from 'app/shared/model/periods.model';
 export class PeriodsResolve implements Resolve<IPeriods> {
     constructor(private service: PeriodsService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Periods> {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
-            return this.service.find(id).pipe(map((periods: HttpResponse<Periods>) => periods.body));
+            return this.service.find(id).pipe(
+                filter((response: HttpResponse<Periods>) => response.ok),
+                map((periods: HttpResponse<Periods>) => periods.body)
+            );
         }
         return of(new Periods());
     }
@@ -30,12 +32,8 @@ export const periodsRoute: Routes = [
     {
         path: 'periods',
         component: PeriodsComponent,
-        resolve: {
-            pagingParams: JhiResolvePagingParams
-        },
         data: {
             authorities: ['ROLE_USER'],
-            defaultSort: 'id,asc',
             pageTitle: 'Periods'
         },
         canActivate: [UserRouteAccessService]

@@ -9,13 +9,14 @@ import com.mycompany.myapp.service.mapper.StudentYearMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -49,25 +50,26 @@ public class StudentYearServiceImpl implements StudentYearService {
     @Override
     public StudentYearDTO save(StudentYearDTO studentYearDTO) {
         log.debug("Request to save StudentYear : {}", studentYearDTO);
+
         StudentYear studentYear = studentYearMapper.toEntity(studentYearDTO);
         studentYear = studentYearRepository.save(studentYear);
         StudentYearDTO result = studentYearMapper.toDto(studentYear);
-        //studentYearSearchRepository.save(studentYear);
+        studentYearSearchRepository.save(studentYear);
         return result;
     }
 
     /**
      * Get all the studentYears.
      *
-     * @param pageable the pagination information
      * @return the list of entities
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<StudentYearDTO> findAll(Pageable pageable) {
+    public List<StudentYearDTO> findAll() {
         log.debug("Request to get all StudentYears");
-        return studentYearRepository.findAll(pageable)
-            .map(studentYearMapper::toDto);
+        return studentYearRepository.findAll().stream()
+            .map(studentYearMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 
 
@@ -101,14 +103,15 @@ public class StudentYearServiceImpl implements StudentYearService {
      * Search for the studentYear corresponding to the query.
      *
      * @param query the query of the search
-     * @param pageable the pagination information
      * @return the list of entities
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<StudentYearDTO> search(String query, Pageable pageable) {
-        log.debug("Request to search for a page of StudentYears for query {}", query);
-        return studentYearSearchRepository.search(queryStringQuery(query), pageable)
-            .map(studentYearMapper::toDto);
+    public List<StudentYearDTO> search(String query) {
+        log.debug("Request to search StudentYears for query {}", query);
+        return StreamSupport
+            .stream(studentYearSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .map(studentYearMapper::toDto)
+            .collect(Collectors.toList());
     }
 }

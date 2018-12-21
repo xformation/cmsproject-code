@@ -4,15 +4,10 @@ import com.codahale.metrics.annotation.Timed;
 import com.mycompany.myapp.service.SectionService;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import com.mycompany.myapp.web.rest.util.HeaderUtil;
-import com.mycompany.myapp.web.rest.util.PaginationUtil;
 import com.mycompany.myapp.service.dto.SectionDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -88,16 +83,13 @@ public class SectionResource {
     /**
      * GET  /sections : get all the sections.
      *
-     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of sections in body
      */
     @GetMapping("/sections")
     @Timed
-    public ResponseEntity<List<SectionDTO>> getAllSections(Pageable pageable) {
-        log.debug("REST request to get a page of Sections");
-        Page<SectionDTO> page = sectionService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/sections");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    public List<SectionDTO> getAllSections() {
+        log.debug("REST request to get all Sections");
+        return sectionService.findAll();
     }
 
     /**
@@ -133,16 +125,13 @@ public class SectionResource {
      * to the query.
      *
      * @param query the query of the section search
-     * @param pageable the pagination information
      * @return the result of the search
      */
     @GetMapping("/_search/sections")
     @Timed
-    public ResponseEntity<List<SectionDTO>> searchSections(@RequestParam String query, Pageable pageable) {
-        log.debug("REST request to search for a page of Sections for query {}", query);
-        Page<SectionDTO> page = sectionService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/sections");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    public List<SectionDTO> searchSections(@RequestParam String query) {
+        log.debug("REST request to search Sections for query {}", query);
+        return sectionService.search(query);
     }
 
 }

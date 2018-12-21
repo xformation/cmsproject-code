@@ -2,9 +2,7 @@ package com.mycompany.myapp.service;
 
 import com.mycompany.myapp.service.dto.SubjectDTO;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -23,10 +21,9 @@ public interface SubjectService {
     /**
      * Get all the subjects.
      *
-     * @param pageable the pagination information
      * @return the list of entities
      */
-    Page<SubjectDTO> findAll(Pageable pageable);
+    List<SubjectDTO> findAll();
 
 
     /**
@@ -49,8 +46,7 @@ public interface SubjectService {
      *
      * @param query the query of the search
      * 
-     * @param pageable the pagination information
      * @return the list of entities
      */
-    Page<SubjectDTO> search(String query, Pageable pageable);
+    List<SubjectDTO> search(String query);
 }

@@ -16,8 +16,6 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -55,10 +53,8 @@ public class PeriodsResourceIntTest {
     @Autowired
     private PeriodsRepository periodsRepository;
 
-
     @Autowired
     private PeriodsMapper periodsMapper;
-    
 
     @Autowired
     private PeriodsService periodsService;
@@ -193,7 +189,6 @@ public class PeriodsResourceIntTest {
             .andExpect(jsonPath("$.[*].periods").value(hasItem(DEFAULT_PERIODS.toString())));
     }
     
-
     @Test
     @Transactional
     public void getPeriods() throws Exception {
@@ -207,6 +202,7 @@ public class PeriodsResourceIntTest {
             .andExpect(jsonPath("$.id").value(periods.getId().intValue()))
             .andExpect(jsonPath("$.periods").value(DEFAULT_PERIODS.toString()));
     }
+
     @Test
     @Transactional
     public void getNonExistingPeriods() throws Exception {
@@ -254,7 +250,7 @@ public class PeriodsResourceIntTest {
         // Create the Periods
         PeriodsDTO periodsDTO = periodsMapper.toDto(periods);
 
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException 
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restPeriodsMockMvc.perform(put("/api/periods")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(periodsDTO)))
@@ -294,8 +290,8 @@ public class PeriodsResourceIntTest {
     public void searchPeriods() throws Exception {
         // Initialize the database
         periodsRepository.saveAndFlush(periods);
-        when(mockPeriodsSearchRepository.search(queryStringQuery("id:" + periods.getId()), PageRequest.of(0, 20)))
-            .thenReturn(new PageImpl<>(Collections.singletonList(periods), PageRequest.of(0, 1), 1));
+        when(mockPeriodsSearchRepository.search(queryStringQuery("id:" + periods.getId())))
+            .thenReturn(Collections.singletonList(periods));
         // Search the periods
         restPeriodsMockMvc.perform(get("/api/_search/periods?query=id:" + periods.getId()))
             .andExpect(status().isOk())

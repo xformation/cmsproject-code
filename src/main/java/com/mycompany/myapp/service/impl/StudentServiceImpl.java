@@ -1,25 +1,24 @@
 package com.mycompany.myapp.service.impl;
 
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
-
-import java.util.Optional;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
+import com.mycompany.myapp.service.StudentService;
 import com.mycompany.myapp.domain.Student;
 import com.mycompany.myapp.repository.StudentRepository;
 import com.mycompany.myapp.repository.search.StudentSearchRepository;
-import com.mycompany.myapp.service.StudentService;
 import com.mycompany.myapp.service.dto.StudentDTO;
 import com.mycompany.myapp.service.mapper.StudentMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing Student.
@@ -27,9 +26,6 @@ import com.mycompany.myapp.service.mapper.StudentMapper;
 @Service
 @Transactional
 public class StudentServiceImpl implements StudentService {
-	
-	@PersistenceContext
-    private EntityManager em;
 
     private final Logger log = LoggerFactory.getLogger(StudentServiceImpl.class);
 
@@ -54,25 +50,26 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public StudentDTO save(StudentDTO studentDTO) {
         log.debug("Request to save Student : {}", studentDTO);
+
         Student student = studentMapper.toEntity(studentDTO);
         student = studentRepository.save(student);
         StudentDTO result = studentMapper.toDto(student);
-        //studentSearchRepository.save(student);
+        studentSearchRepository.save(student);
         return result;
     }
 
     /**
      * Get all the students.
      *
-     * @param pageable the pagination information
      * @return the list of entities
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<StudentDTO> findAll(Pageable pageable) {
+    public List<StudentDTO> findAll() {
         log.debug("Request to get all Students");
-        return studentRepository.findAll(pageable)
-            .map(studentMapper::toDto);
+        return studentRepository.findAll().stream()
+            .map(studentMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 
 
@@ -106,16 +103,15 @@ public class StudentServiceImpl implements StudentService {
      * Search for the student corresponding to the query.
      *
      * @param query the query of the search
-     * @param pageable the pagination information
      * @return the list of entities
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<StudentDTO> search(String query, Pageable pageable) {
-        log.debug("Request to search for a page of Students for query {}", query);
-        return studentSearchRepository.search(queryStringQuery(query), pageable)
-            .map(studentMapper::toDto);
+    public List<StudentDTO> search(String query) {
+        log.debug("Request to search Students for query {}", query);
+        return StreamSupport
+            .stream(studentSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .map(studentMapper::toDto)
+            .collect(Collectors.toList());
     }
-    
-
 }

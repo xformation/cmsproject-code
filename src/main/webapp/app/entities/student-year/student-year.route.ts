@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
-import { JhiPaginationUtil, JhiResolvePagingParams } from 'ng-jhipster';
 import { UserRouteAccessService } from 'app/core';
-import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import { StudentYear } from 'app/shared/model/student-year.model';
 import { StudentYearService } from './student-year.service';
 import { StudentYearComponent } from './student-year.component';
@@ -17,10 +16,13 @@ import { IStudentYear } from 'app/shared/model/student-year.model';
 export class StudentYearResolve implements Resolve<IStudentYear> {
     constructor(private service: StudentYearService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<StudentYear> {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
-            return this.service.find(id).pipe(map((studentYear: HttpResponse<StudentYear>) => studentYear.body));
+            return this.service.find(id).pipe(
+                filter((response: HttpResponse<StudentYear>) => response.ok),
+                map((studentYear: HttpResponse<StudentYear>) => studentYear.body)
+            );
         }
         return of(new StudentYear());
     }
@@ -30,12 +32,8 @@ export const studentYearRoute: Routes = [
     {
         path: 'student-year',
         component: StudentYearComponent,
-        resolve: {
-            pagingParams: JhiResolvePagingParams
-        },
         data: {
             authorities: ['ROLE_USER'],
-            defaultSort: 'id,asc',
             pageTitle: 'StudentYears'
         },
         canActivate: [UserRouteAccessService]

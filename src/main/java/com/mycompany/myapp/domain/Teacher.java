@@ -30,8 +30,7 @@ public class Teacher implements Serializable {
     @Column(name = "t_name", nullable = false)
     private String tName;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @OneToOne    @JoinColumn(unique = true)
     private Periods periods;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

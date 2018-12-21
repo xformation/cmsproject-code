@@ -22,7 +22,7 @@
     "changelogDate": "20181202105143",
     "entityTableName": "teacher",
     "dto": "mapstruct",
-    "pagination": "pagination",
+    "pagination": "no",
     "service": "serviceImpl",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,

@@ -1,14 +1,9 @@
 package com.mycompany.myapp.service;
 
-
-import java.util.Optional;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
 import com.mycompany.myapp.service.dto.StudentDTO;
 
-
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Service Interface for managing Student.
@@ -26,10 +21,9 @@ public interface StudentService {
     /**
      * Get all the students.
      *
-     * @param pageable the pagination information
      * @return the list of entities
      */
-    Page<StudentDTO> findAll(Pageable pageable);
+    List<StudentDTO> findAll();
 
 
     /**
@@ -52,11 +46,7 @@ public interface StudentService {
      *
      * @param query the query of the search
      * 
-     * @param pageable the pagination information
      * @return the list of entities
      */
-    Page<StudentDTO> search(String query, Pageable pageable);
-   
-
-    
+    List<StudentDTO> search(String query);
 }

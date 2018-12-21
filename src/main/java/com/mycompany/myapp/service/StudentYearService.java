@@ -2,9 +2,7 @@ package com.mycompany.myapp.service;
 
 import com.mycompany.myapp.service.dto.StudentYearDTO;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -23,10 +21,9 @@ public interface StudentYearService {
     /**
      * Get all the studentYears.
      *
-     * @param pageable the pagination information
      * @return the list of entities
      */
-    Page<StudentYearDTO> findAll(Pageable pageable);
+    List<StudentYearDTO> findAll();
 
 
     /**
@@ -49,8 +46,7 @@ public interface StudentYearService {
      *
      * @param query the query of the search
      * 
-     * @param pageable the pagination information
      * @return the list of entities
      */
-    Page<StudentYearDTO> search(String query, Pageable pageable);
+    List<StudentYearDTO> search(String query);
 }
