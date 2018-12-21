@@ -35,6 +35,10 @@ public class StudentAttendance implements Serializable {
     private LocalDate attendanceDate;
 
     @NotNull
+    @Column(name = "s_name", nullable = false)
+    private String sName;
+
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private Status status;
@@ -91,6 +95,19 @@ public class StudentAttendance implements Serializable {
 
     public void setAttendanceDate(LocalDate attendanceDate) {
         this.attendanceDate = attendanceDate;
+    }
+
+    public String getsName() {
+        return sName;
+    }
+
+    public StudentAttendance sName(String sName) {
+        this.sName = sName;
+        return this;
+    }
+
+    public void setsName(String sName) {
+        this.sName = sName;
     }
 
     public Status getStatus() {
@@ -236,6 +253,7 @@ public class StudentAttendance implements Serializable {
         return "StudentAttendance{" +
             "id=" + getId() +
             ", attendanceDate='" + getAttendanceDate() + "'" +
+            ", sName='" + getsName() + "'" +
             ", status='" + getStatus() + "'" +
             ", comments='" + getComments() + "'" +
             "}";

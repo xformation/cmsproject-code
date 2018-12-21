@@ -10,7 +10,7 @@ import java.util.Optional;
  * @author Xiangbin HAN (hanxb2001@163.com)
  *
  */
-public class StudentOrder {
+public class StudentAttendanceOrder {
     
     private OrderField field;
     private OrderType order;
@@ -43,13 +43,13 @@ public class StudentOrder {
      * @param orders
      * @return String
      */
-    public static String buildOrderJpaQuery(List<StudentOrder> orders) {
+    public static String buildOrderJpaQuery(List<StudentAttendanceOrder> orders) {
         StringBuilder sb = new StringBuilder();
 
-        Optional<List<StudentOrder>> nonNullOrders = Optional.ofNullable(orders);
+        Optional<List<StudentAttendanceOrder>> nonNullOrders = Optional.ofNullable(orders);
         nonNullOrders.ifPresent(list -> 
             {sb.append(" order by");
-            list.forEach(order -> sb.append(" student." + order.getField() + " " + order.getOrder() + ","));}
+            list.forEach(order -> sb.append(" student_attendance." + order.getField() + " " + order.getOrder() + ","));}
         );
 
         if(sb.indexOf("order by") > 0)

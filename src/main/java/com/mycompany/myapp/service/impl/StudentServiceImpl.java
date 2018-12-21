@@ -2,26 +2,19 @@ package com.mycompany.myapp.service.impl;
 
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
-
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mycompany.myapp.domain.Student;
-import com.mycompany.myapp.graphql.resolvers.StudentFilter;
-import com.mycompany.myapp.graphql.resolvers.StudentOrder;
 import com.mycompany.myapp.repository.StudentRepository;
 import com.mycompany.myapp.repository.search.StudentSearchRepository;
 import com.mycompany.myapp.service.StudentService;
@@ -124,20 +117,5 @@ public class StudentServiceImpl implements StudentService {
             .map(studentMapper::toDto);
     }
     
-    @SuppressWarnings("unchecked")
-    @Override
-    public Collection<Student> findAllByFilterOrder(StudentFilter filter, List<StudentOrder> orders) throws DataAccessException{
-        StringBuilder sb = new StringBuilder("SELECT student FROM Student student");
 
-        Optional<StudentFilter> nonNullFilter = Optional.ofNullable(filter);
-        nonNullFilter.ifPresent(f -> sb.append(f.buildJpaQuery()));
-
-        sb.append(StudentOrder.buildOrderJpaQuery(orders));
-        
-        System.out.println("studentfilter"+sb.toString());
-        Query query = this.em.createQuery(sb.toString());
-        nonNullFilter.ifPresent(f -> f.buildJpaQueryParameters(query));
-
-        return query.getResultList();
-    }
 }

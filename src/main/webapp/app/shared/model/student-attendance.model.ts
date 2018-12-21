@@ -8,6 +8,7 @@ export const enum Status {
 export interface IStudentAttendance {
     id?: number;
     attendanceDate?: Moment;
+    sName?: string;
     status?: Status;
     comments?: string;
     studentYearId?: number;
@@ -23,6 +24,7 @@ export class StudentAttendance implements IStudentAttendance {
     constructor(
         public id?: number,
         public attendanceDate?: Moment,
+        public sName?: string,
         public status?: Status,
         public comments?: string,
         public studentYearId?: number,

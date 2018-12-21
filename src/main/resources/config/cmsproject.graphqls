@@ -73,7 +73,7 @@ enum Common {
     DBMS
 }
 
-input StudentFilter {
+input StudentAttendanceFilter {
   sName: String
 }
 
@@ -87,7 +87,7 @@ enum OrderField {
   sName
 }
 
-input StudentOrder {
+input StudentAttendanceOrder {
   field: OrderField
   order: OrderType
 }
@@ -173,6 +173,7 @@ type StudentAttendanceDTO {
   id: ID!
   attendanceDate: LocalDate!
   status: String!
+  sName: String!
   comments: String!
   studentYearId: Long!
   departmentsId: Long!
@@ -202,13 +203,13 @@ type BankAccountsDTO{
     corporateId: Long!
 }
 
-type Student {
-    id: ID!
-    sName: String!
-    attendance: Boolean!
-    electiveSub: String!
+type StudentAttendance {
+  id: ID!
+  attendanceDate: LocalDate!
+  status: String!
+  sName: String!
+  comments: String!
 }
-
 type Query {
   findStudentYear(id:ID!): StudentYearDTO
   findSection(id:ID!): SectionDTO
@@ -226,7 +227,7 @@ type Query {
   findStudentAttendance(id:ID!): StudentAttendanceDTO
   findSemester(id:ID!): SemesterDTO
   findAllByLocation: [LocationDTO!]!
-  students(filter: StudentFilter, orders: [StudentOrder!]): [Student!]!
+   students(filter: StudentAttendanceFilter, orders: [StudentAttendanceOrder!]): [StudentAttendance!]!
   now: LocalDate
 }
 
@@ -246,7 +247,7 @@ type Mutation {
   newAuthorizedSignatory(id:ID!, signatoryName: String!, signatoryFatherName: String!, signatoryDesignation: String!, address: String!, email: String!, panCardNumber: String!): AuthorizedSignatoryDTO
   newBankAccounts(id:ID!, nameOfBank: NameOfBank!, accountNumber: Long!, typeOfAccount: String!, ifsCode: String!, branch: String!,corporateId: Long): BankAccountsDTO
   newSemester(id: ID!, sem: Sem): SemesterDTO!
-  newStudentAttendance(id: ID!, attendanceDate : LocalDate!, status: Status, comments:  String!,studentYearId: Long, departmentsId: Long, subjectId: Long, semesterId: Long, sectionId: Long, periodsId: Long, studentId: Long): StudentAttendanceDTO
+  newStudentAttendance(id: ID!, attendanceDate : LocalDate!,sName: String!, status: Status, comments:  String!,studentYearId: Long, departmentsId: Long, subjectId: Long, semesterId: Long, sectionId: Long, periodsId: Long, studentId: Long): StudentAttendanceDTO
   deleteStudentYear(id: ID!): Boolean!
   deleteStudentAttendance(id: ID!): Boolean!
   deleteSemester(id: ID!): Boolean

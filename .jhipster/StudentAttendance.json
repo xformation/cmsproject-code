@@ -9,6 +9,13 @@
             ]
         },
         {
+            "fieldName": "sName",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
             "fieldName": "status",
             "fieldType": "Status",
             "fieldValues": "ACTIVE,DEACTIVE",

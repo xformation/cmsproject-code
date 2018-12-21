@@ -113,11 +113,12 @@ public class Mutation implements GraphQLMutationResolver{
         return true;
     }
 	
-	public StudentAttendanceDTO newStudentAttendance(Long id,LocalDate attendanceDate,Status status,String comments,Long studentYearId,Long departmentsId,
+	public StudentAttendanceDTO newStudentAttendance(Long id,LocalDate attendanceDate,String sName,Status status,String comments,Long studentYearId,Long departmentsId,
 			Long subjectId,Long semesterId,Long sectionId,Long periodsId,Long studentId) {
 		StudentAttendanceDTO studentAttendanceDTO = new StudentAttendanceDTO();
 		studentAttendanceDTO.setId(id);
 		studentAttendanceDTO.setAttendanceDate(attendanceDate);
+		studentAttendanceDTO.setsName(sName);
 		studentAttendanceDTO.setComments(comments);
 		studentAttendanceDTO.setStatus(status);
 		studentAttendanceDTO.setStudentYearId(studentYearId);

@@ -52,6 +52,9 @@ public class StudentAttendanceResourceIntTest {
     private static final LocalDate DEFAULT_ATTENDANCE_DATE = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_ATTENDANCE_DATE = LocalDate.now(ZoneId.systemDefault());
 
+    private static final String DEFAULT_S_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_S_NAME = "BBBBBBBBBB";
+
     private static final Status DEFAULT_STATUS = Status.ACTIVE;
     private static final Status UPDATED_STATUS = Status.DEACTIVE;
 
@@ -111,6 +114,7 @@ public class StudentAttendanceResourceIntTest {
     public static StudentAttendance createEntity(EntityManager em) {
         StudentAttendance studentAttendance = new StudentAttendance()
             .attendanceDate(DEFAULT_ATTENDANCE_DATE)
+            .sName(DEFAULT_S_NAME)
             .status(DEFAULT_STATUS)
             .comments(DEFAULT_COMMENTS);
         return studentAttendance;
@@ -138,6 +142,7 @@ public class StudentAttendanceResourceIntTest {
         assertThat(studentAttendanceList).hasSize(databaseSizeBeforeCreate + 1);
         StudentAttendance testStudentAttendance = studentAttendanceList.get(studentAttendanceList.size() - 1);
         assertThat(testStudentAttendance.getAttendanceDate()).isEqualTo(DEFAULT_ATTENDANCE_DATE);
+        assertThat(testStudentAttendance.getsName()).isEqualTo(DEFAULT_S_NAME);
         assertThat(testStudentAttendance.getStatus()).isEqualTo(DEFAULT_STATUS);
         assertThat(testStudentAttendance.getComments()).isEqualTo(DEFAULT_COMMENTS);
 
@@ -174,6 +179,25 @@ public class StudentAttendanceResourceIntTest {
         int databaseSizeBeforeTest = studentAttendanceRepository.findAll().size();
         // set the field null
         studentAttendance.setAttendanceDate(null);
+
+        // Create the StudentAttendance, which fails.
+        StudentAttendanceDTO studentAttendanceDTO = studentAttendanceMapper.toDto(studentAttendance);
+
+        restStudentAttendanceMockMvc.perform(post("/api/student-attendances")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(studentAttendanceDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<StudentAttendance> studentAttendanceList = studentAttendanceRepository.findAll();
+        assertThat(studentAttendanceList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checksNameIsRequired() throws Exception {
+        int databaseSizeBeforeTest = studentAttendanceRepository.findAll().size();
+        // set the field null
+        studentAttendance.setsName(null);
 
         // Create the StudentAttendance, which fails.
         StudentAttendanceDTO studentAttendanceDTO = studentAttendanceMapper.toDto(studentAttendance);
@@ -237,6 +261,7 @@ public class StudentAttendanceResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(studentAttendance.getId().intValue())))
             .andExpect(jsonPath("$.[*].attendanceDate").value(hasItem(DEFAULT_ATTENDANCE_DATE.toString())))
+            .andExpect(jsonPath("$.[*].sName").value(hasItem(DEFAULT_S_NAME.toString())))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
             .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS.toString())));
     }
@@ -253,6 +278,7 @@ public class StudentAttendanceResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(studentAttendance.getId().intValue()))
             .andExpect(jsonPath("$.attendanceDate").value(DEFAULT_ATTENDANCE_DATE.toString()))
+            .andExpect(jsonPath("$.sName").value(DEFAULT_S_NAME.toString()))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()))
             .andExpect(jsonPath("$.comments").value(DEFAULT_COMMENTS.toString()));
     }
@@ -279,6 +305,7 @@ public class StudentAttendanceResourceIntTest {
         em.detach(updatedStudentAttendance);
         updatedStudentAttendance
             .attendanceDate(UPDATED_ATTENDANCE_DATE)
+            .sName(UPDATED_S_NAME)
             .status(UPDATED_STATUS)
             .comments(UPDATED_COMMENTS);
         StudentAttendanceDTO studentAttendanceDTO = studentAttendanceMapper.toDto(updatedStudentAttendance);
@@ -293,6 +320,7 @@ public class StudentAttendanceResourceIntTest {
         assertThat(studentAttendanceList).hasSize(databaseSizeBeforeUpdate);
         StudentAttendance testStudentAttendance = studentAttendanceList.get(studentAttendanceList.size() - 1);
         assertThat(testStudentAttendance.getAttendanceDate()).isEqualTo(UPDATED_ATTENDANCE_DATE);
+        assertThat(testStudentAttendance.getsName()).isEqualTo(UPDATED_S_NAME);
         assertThat(testStudentAttendance.getStatus()).isEqualTo(UPDATED_STATUS);
         assertThat(testStudentAttendance.getComments()).isEqualTo(UPDATED_COMMENTS);
 
@@ -356,6 +384,7 @@ public class StudentAttendanceResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(studentAttendance.getId().intValue())))
             .andExpect(jsonPath("$.[*].attendanceDate").value(hasItem(DEFAULT_ATTENDANCE_DATE.toString())))
+            .andExpect(jsonPath("$.[*].sName").value(hasItem(DEFAULT_S_NAME)))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
             .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS)));
     }
